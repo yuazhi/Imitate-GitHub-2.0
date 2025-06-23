@@ -2237,9 +2237,9 @@ margin-left: auto; /* 保持靠右 */
     transition: background-color 0.2s ease;
 }
 
-.language-item:hover {
+/* .language-item:hover {
     background-color: transparent;
-}
+} */
 
 .language-color {
     width: 12px;
@@ -5457,6 +5457,12 @@ margin-left: auto; /* 保持靠右 */
 
 .show-more-button svg {
     margin-left: 4px;
+    fill: var(--text-primary);
+}
+
+/* 深色模式下的箭头颜色 */
+[data-theme="dark"] .show-more-button svg {
+    fill: #ffffff;
 }
 
 /* 贡献数据刷新按钮和提示样式 */
