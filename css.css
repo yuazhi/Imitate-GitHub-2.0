@@ -4,7 +4,6 @@
     box-sizing: border-box;
 }
 
-/* 添加暗色模式样式 */
 :root {
     --bg-color: #ffffff;
     --text-color: #1F2328;
