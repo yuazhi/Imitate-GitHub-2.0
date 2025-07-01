@@ -72,7 +72,7 @@ const ongoingProject = {
 // GitHub API配置
 const GITHUB_USERNAME = 'yuazhi';
 const GITHUB_API_BASE = 'https://api.github.com';
-const GITHUB_TOKEN = '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';
+const GITHUB_TOKEN = '#';
 
 // Memos API配置
 const MEMOS_API_BASE = 'https://api.yuazhi.cn/api/v1';
@@ -903,7 +903,8 @@ async function fetchContributionData(year = new Date().getFullYear(), forceRefre
                             title: commentIssueTitle,
                             description: `${commentAction} comment on issue "${commentIssueTitle}" in ${event.repo.name.split('/')[1]}`,
                             date: eventDate.toLocaleString('en-US', { month: 'short', day: 'numeric' }),
-                            created_at: event.created_at // 保存完整时间戳用于排序
+                            created_at: event.created_at, // 保存完整时间戳用于排序
+                            isIssueComment: true // 新增字段，标记为 issues 回复
                         });
                         break;
                     case 'PullRequestReviewEvent':
@@ -1615,7 +1616,7 @@ function renderActivityTimeline(data, activities = null) {
                                 </div>
                                 <div class="activity-content">
                                     <div class="activity-header">
-                                        ${activity.description}
+                                        ${activity.isIssueComment ? `回复了 issue "${activity.title}" in ${activity.repo}` : activity.description}
                                     </div>
                                     <div class="activity-details">
                                         <a href="https://github.com/${GITHUB_USERNAME}/${activity.repo}" target="_blank" class="repo-link">
