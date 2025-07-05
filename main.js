@@ -70,13 +70,13 @@ const ongoingProject = {
 };
 
 // GitHub API配置
-const GITHUB_USERNAME = 'yuazhi';
-const GITHUB_API_BASE = 'https://api.github.com';
+const GITHUB_USERNAME = '#';
+const GITHUB_API_BASE = '#';
 const GITHUB_TOKEN = '#';
 
 // Memos API配置
-const MEMOS_API_BASE = 'https://api.yuazhi.cn/api/v1';
-const MEMOS_TOKEN = 'eyJhbGciOiJIUzI1NiIsImtpZCI6InYxIiwidHlwIjoiSldUIn0.eyJuYW1lIjoieXVhemhpIiwiaXNzIjoibWVtb3MiLCJzdWIiOiIxIiwiYXVkIjpbInVzZXIuYWNjZXNzLXRva2VuIl0sImlhdCI6MTc0OTg0NTU5N30.wyOVI4Gr5g0ImjJ9yjeKIuCKxLeZZwlQBqTdfrdLbqs';
+const MEMOS_API_BASE = '#';
+const MEMOS_TOKEN = '#';
 // const MEMOS_RESOURCE_BASE = 'http://120.26.160.134:5230/o/r/'; // Memos 资源的基础URL
 
 // 文章 API 配置
@@ -486,13 +486,35 @@ function renderProjectCard(project) {
     // 创建时间
     const created = project.created_at ? new Date(project.created_at).toLocaleDateString() : '';
 
+    // 检查是否为最新项目（通过检查是否有特殊的标识或者是否为第一个项目）
+    const isLatestProject = project.isLatest || project.isMostRecent;
+
     return `
     <div class="repo-card" onclick="showProjectDetail('${project.name}')">
         <div class="repo-header-row">
             <a class="repo-title" href="${project.html_url || '#'}" target="_blank">${project.name}</a>
             <span class="repo-created">Created ${created}</span>
         </div>
-        <div class="repo-description">${project.description || 'No description available'}</div>
+        <div class="repo-description${isLatestProject ? ' latest-project-description' : ''}" ${isLatestProject ? 'style="margin-bottom:9px;"' : ''}>${project.description || 'No description available'}
+            ${isLatestProject ? `
+            <style>
+                .latest-project-description {
+                    margin-bottom: 9px;
+                }
+                @media (max-width: 767px) {
+                    .latest-project-description { 
+                        margin-top: -5px; 
+                        margin-bottom: 6px; 
+                    }
+                }
+                @media (min-width: 768px) {
+                    .latest-project-description { 
+                        margin-top: -10px; 
+                    }
+                }
+            </style>
+            ` : ''}
+        </div>
         <div class="repo-stats-row">${stats}</div>
         <div class="repo-bottom">${bottom}</div>
         <div class="repo-extra">
@@ -527,7 +549,7 @@ function renderOngoingProject() {
         </div>
         <div class="pinned-project">
             <div class="repo-title">${ongoingProject.name}</div>
-            <p class="repo-description">${ongoingProject.description}</p>
+            <p class="repo-description" style="margin-top:-10px;margin-bottom:10px;">${ongoingProject.description}</p>
             <div class="progress-bar">
                 <div class="progress" style="width: ${ongoingProject.progress}%"></div>
             </div>
@@ -903,8 +925,7 @@ async function fetchContributionData(year = new Date().getFullYear(), forceRefre
                             title: commentIssueTitle,
                             description: `${commentAction} comment on issue "${commentIssueTitle}" in ${event.repo.name.split('/')[1]}`,
                             date: eventDate.toLocaleString('en-US', { month: 'short', day: 'numeric' }),
-                            created_at: event.created_at, // 保存完整时间戳用于排序
-                            isIssueComment: true // 新增字段，标记为 issues 回复
+                            created_at: event.created_at // 保存完整时间戳用于排序
                         });
                         break;
                     case 'PullRequestReviewEvent':
@@ -1616,7 +1637,7 @@ function renderActivityTimeline(data, activities = null) {
                                 </div>
                                 <div class="activity-content">
                                     <div class="activity-header">
-                                        ${activity.isIssueComment ? `回复了 issue "${activity.title}" in ${activity.repo}` : activity.description}
+                                        ${activity.description}
                                     </div>
                                     <div class="activity-details">
                                         <a href="https://github.com/${GITHUB_USERNAME}/${activity.repo}" target="_blank" class="repo-link">
@@ -2141,6 +2162,11 @@ async function renderOverview() {
         // 获取最新的非 fork 仓库，并且不是 yuazhi/yuazhi 仓库
         const mostRecentRepo = repoDetails.find(repo => !repo.is_fork && repo.name !== 'yuazhi' && repo.full_name !== 'yuazhi/yuazhi');
         
+        // 为最新项目添加标识
+        if (mostRecentRepo) {
+            mostRecentRepo.isLatest = true;
+        }
+        
         // 获取所有使用的编程语言
         const allLanguages = new Set();
         repoDetails.forEach(repo => {
@@ -2148,6 +2174,13 @@ async function renderOverview() {
             if (repo.tags) repo.tags.forEach(tag => allLanguages.add(tag));
         });
         ['Python', 'TypeScript', 'Vue', 'React', 'Node.js', 'Dart', 'Rust', 'C++', 'C#'].forEach(lang => allLanguages.add(lang));
+        
+        // 为recent-projects部分准备项目数据，确保它们没有isLatest标识
+        const recentProjects = repoDetails.slice(0, 2).map(repo => ({
+            ...repo,
+            isLatest: false // 明确设置为false，确保没有特殊样式
+        }));
+        
         content.innerHTML = `
             ${mostRecentRepo ? `
                 <div class="ongoing-project-title">
@@ -2181,7 +2214,7 @@ async function renderOverview() {
                 </div>
             </div>
             <div class="recent-projects">
-                ${repoDetails.slice(0, 2).map(renderProjectCard).join('')}
+                ${recentProjects.map(renderProjectCard).join('')}
             </div>
         `;
         
