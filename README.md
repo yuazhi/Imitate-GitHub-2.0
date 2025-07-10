@@ -1,4 +1,4 @@
-# 鸢栀的个人主页 - 使用说明
+# 仿github个人主页
 
 ## 🌐 演示站点
 **在线预览**：[yuazhi.cn](https://yuazhi.cn)
