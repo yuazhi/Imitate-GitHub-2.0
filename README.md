@@ -1,7 +1,36 @@
 # 鸢栀的个人主页 - 使用说明
 
+## 🔧 快速开始
+在使用此模板之前，请先修改以下关键配置：
+
+1. 在 `main.js` 中修改：
+   - GitHub 配置：
+     ```javascript
+     const GITHUB_USERNAME = '#';  // 替换为你的 GitHub 用户名
+     const GITHUB_TOKEN = '#';     // 替换为你的 GitHub Token
+     ```
+   - Memos API 配置：
+     ```javascript
+     const MEMOS_API_BASE = '#';   // 替换为你的 Memos API 地址
+     const MEMOS_TOKEN = '#';      // 替换为你的 Memos Token
+     ```
+   - 文章 API 配置：
+     ```javascript
+     const ARTICLES_API_CONFIG = {
+         URL: "#",                 // 替换为你的文章 API 地址
+         // ... 其他配置
+     };
+     ```
+   - 友情链接配置：修改 `friendsData` 数组中的友链信息
+
+2. 在 `index.html` 中修改：
+   - 网站标题和描述
+   - Open Graph 标签信息
+   - 社交媒体链接
+   - 备案信息（如需要）
+
+以下是详细介绍教程
 ## 📖 项目简介
-请将内容改为自己的内容
 这是一个基于 GitHub 风格设计的个人主页项目，具有现代化的界面和丰富的功能模块。项目采用响应式设计，支持明暗主题切换，并集成了多种数据源来展示个人信息。
 
 ## ✨ 主要功能
