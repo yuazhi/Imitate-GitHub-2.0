@@ -1,5 +1,6 @@
-# 仿github个人主页
-
+# 仿github的个人主页
+> [!TIP]
+> 此项目不能用于任何的商业目的
 ## 🌐 演示站点
 **在线预览**：[yuazhi.cn](https://yuazhi.cn)
 
