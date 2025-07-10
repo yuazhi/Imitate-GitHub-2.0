@@ -81,7 +81,7 @@ const MEMOS_TOKEN = '#';
 
 // 文章 API 配置
 const ARTICLES_API_CONFIG = {
-    URL: "https://open.apisql.cn/api/postget/$rest",
+    URL: "#",
     Method: "post",
     Headers: {
         "Accept": "application/json, text/plain, */*",
@@ -120,7 +120,7 @@ async function fetchArticlesData() {
     } catch (error) {
         console.error("Error fetching articles data:", error);
         hideSkeletonLoading();
-        return [];
+        throw error; // 抛出错误而不是返回空数组
     }
 }
 
@@ -464,7 +464,7 @@ function renderProjectCard(project) {
         ` : ''}
         <span class="repo-license">
             <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16"><path d="M1.5 2.75A.75.75 0 0 1 2.25 2h11.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H2.25a.75.75 0 0 1-.75-.75V2.75Zm1 .75v9.5h11V3.5H2.5Z"></path></svg>
-            ${project.license?.spdx_id || 'MIT License'}
+            ${project.license?.spdx_id || 'MIT'}
         </span>
         <span class="repo-updated">
             <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16"><path d="M1.643 3.143 L.427 1.927 A.25.25 0 0 0 0 2.104 V5.75 c0 .138.112.25.25.25 h3.646 a.25.25 0 0 0 .177-.427 L2.715 4.215 a6.5 6.5 0 1 1-1.18 4.458.75.75 0 1 0-1.493.154 A8.001 8.001 0 1 0 8 0a7.964 7.964 0 0 0-6.357 3.143 z"></path></svg>
@@ -495,7 +495,7 @@ function renderProjectCard(project) {
             <a class="repo-title" href="${project.html_url || '#'}" target="_blank">${project.name}</a>
             <span class="repo-created">Created ${created}</span>
         </div>
-        <div class="repo-description${isLatestProject ? ' latest-project-description' : ''}" ${isLatestProject ? 'style="margin-bottom:9px;"' : ''}>${project.description || 'No description available'}
+        <div class="repo-description${isLatestProject ? ' latest-project-description' : ''}" ${isLatestProject ? 'style="margin-bottom:10px;"' : ''}>${project.description || 'No description available'}
             ${isLatestProject ? `
             <style>
                 .latest-project-description {
@@ -1423,6 +1423,18 @@ function showRefreshToast(message, type = 'success') {
 
 // 修改渲染活动时间线的函数，添加 activities 参数
 function renderActivityTimeline(data, activities = null) {
+    // 重置全局计数器和状态
+    currentVisibleActivityCount = 5;
+    lastExpandedCount = 5;
+    
+    // 确保收起按钮被隐藏（避免前一个视图的状态残留）
+    setTimeout(() => {
+        const collapseButton = document.querySelector('.collapse-button');
+        if (collapseButton) {
+            collapseButton.style.display = 'none';
+        }
+    }, 100);
+    
     // 如果没有提供活动数据，使用空对象
     const effectiveActivities = activities || {};
 
@@ -1854,14 +1866,22 @@ function renderActivityTimeline(data, activities = null) {
 
     // The show more button logic should check against the total number of actual activity items
     if (totalActivityItems > initialVisibleCount) {
+        const nextBatch = Math.min(activityIncrement, totalActivityItems - initialVisibleCount);
         timelineHtml += `
             <div class="show-more">
-                <button class="show-more-button" onclick="toggleActivity(event)">
-                    Show more activity
+                <div class="button-group">
+                    <button class="show-more-button activity-action-btn" onclick="toggleActivity(event)">
+                        Show ${nextBatch} more activities
                     <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
-                        <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+                            <path fill="currentColor" d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+                        </svg>
+                    </button>
+                    <button class="collapse-button activity-action-btn" onclick="collapseActivity(event)" style="display: none;">
+                        <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                            <path fill="currentColor" d="M3.22 10.53a.749.749 0 0 1 0-1.06l4.25-4.25a.749.749 0 0 1 1.06 0l4.25 4.25a.749.749 0 1 1-1.06 1.06L8 6.811 4.28 10.53a.749.749 0 0 1-1.06 0Z"></path>
                     </svg>
                 </button>
+                </div>
             </div>
         `;
     }
@@ -2028,10 +2048,22 @@ async function renderContributionGraph() {
                 <div class="contribution-grid">
                     ${data.map(day => {
                         const date = day.date instanceof Date ? day.date : new Date(day.date);
+                        const formattedDate = date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            weekday: 'long'
+                        });
+                        const contributionText = day.contributions === 0 ? 'No contributions' : 
+                                               day.contributions === 1 ? '1 contribution' : 
+                                               `${day.contributions} contributions`;
                         return `
                         <div class="contribution-cell" 
                             data-level="${day.level}"
-                            title="${date.toLocaleDateString()} - ${day.contributions} contributions">
+                            data-date="${date.toISOString()}"
+                            data-contributions="${day.contributions}"
+                            onmouseenter="showContributionTooltip(event, '${formattedDate}', ${day.contributions})"
+                            onmouseleave="hideContributionTooltip()">
                         </div>
                     `}).join('')}
                 </div>
@@ -2104,10 +2136,19 @@ async function updateContributionYear(year, forceRefresh = false) {
         if (grid) {
             grid.innerHTML = data.map(day => {
                 const date = day.date instanceof Date ? day.date : new Date(day.date);
+                const formattedDate = date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    weekday: 'long'
+                });
                 return `
                 <div class="contribution-cell" 
                     data-level="${day.level}"
-                    title="${date.toLocaleDateString()} - ${day.contributions} contributions">
+                            data-date="${date.toISOString()}"
+                            data-contributions="${day.contributions}"
+                            data-tooltip-date="${formattedDate}"
+                            data-tooltip-contributions="${day.contributions}">
                 </div>
             `}).join('');
         }
@@ -2229,9 +2270,12 @@ async function renderOverview() {
     } catch (error) {
         console.error('Error rendering overview:', error);
         content.innerHTML = `
-            <div class="error-message">
-                <h3>概览加载时错误</h3>
-                <p>请稍后再试</p>
+            <div class="blankslate">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <h3>加载失败</h3>
+                <p>无法加载概览内容，请稍后重试</p>
             </div>
         `;
     } finally {
@@ -2252,14 +2296,30 @@ async function renderProjects() {
         // 获取最新的 GitHub 数据
         const repoDetails = await fetchGitHubData();
         
+        if (!repoDetails || repoDetails.length === 0) {
+            content.innerHTML = `
+                <div class="blankslate">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3>暂无项目</h3>
+                    <p>还没有任何项目</p>
+                </div>
+            `;
+            return;
+        }
+        
         // 渲染所有项目
         content.innerHTML = repoDetails.map(repo => renderProjectCard(repo)).join('');
     } catch (error) {
         console.error('Error rendering projects:', error);
         content.innerHTML = `
-            <div class="error-message">
-                <h3>加载项目时出错</h3>
-                <p>请稍后再试</p>
+            <div class="blankslate">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <h3>加载失败</h3>
+                <p>无法加载项目内容，请稍后重试</p>
             </div>
         `;
     } finally {
@@ -2374,7 +2434,7 @@ async function fetchStarredRepos() {
         return repoDetails;
     } catch (error) {
         console.error('Error fetching starred repos:', error);
-        return [];
+        throw error; // 抛出错误而不是返回空数组
     }
 }
 
@@ -2392,6 +2452,9 @@ async function renderStars() {
         if (starredRepos.length === 0) {
             content.innerHTML = `
                 <div class="blankslate">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
                     <h3>没有加星标的仓库</h3>
                     <p>星标是跟踪您感兴趣的仓库的一种方式</p>
                 </div>
@@ -2429,7 +2492,7 @@ async function renderStars() {
                 ` : ''}
                 <span class="repo-license">
                     <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16"><path d="M1.5 2.75A.75.75 0 0 1 2.25 2h11.5a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75H2.25a.75.75 0 0 1-.75-.75V2.75Zm1 .75v9.5h11V3.5H2.5Z"></path></svg>
-                    ${repo.license?.spdx_id || 'MIT License'}
+                    ${repo.license?.spdx_id || 'MIT'}
                 </span>
                 <span class="repo-updated">
                     <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16"><path d="M1.643 3.143 L.427 1.927 A.25.25 0 0 0 0 2.104 V5.75 c0 .138.112.25.25.25 h3.646 a.25.25 0 0 0 .177-.427 L2.715 4.215 a6.5 6.5 0 1 1-1.18 4.458.75.75 0 1 0-1.493.154 A8.001 8.001 0 1 0 8 0a7.964 7.964 0 0 0-6.357 3.143 z"></path></svg>
@@ -2468,9 +2531,12 @@ async function renderStars() {
     } catch (error) {
         console.error('Error rendering stars:', error);
         content.innerHTML = `
-            <div class="error-message">
-                <h3>加载已加星标的存储库时出错</h3>
-                <p>请稍后再试</p>
+            <div class="blankslate">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <h3>加载失败</h3>
+                <p>无法加载已加星标的存储库，请稍后重试</p>
             </div>
         `;
     } finally {
@@ -2783,50 +2849,357 @@ function closeProjectModal() {
     }
 }
 
+// 添加全局变量跟踪当前显示的活动项目数量
+let currentVisibleActivityCount = 5; // 初始显示5个
+const activityIncrement = 6; // 每次展开显示6个
+let lastExpandedCount = 5; // 记录上次展开的位置
+
 // 添加切换活动显示的函数
 function toggleActivity(event) {
     event.preventDefault();
-    const hiddenItems = document.querySelectorAll('.hidden-activity-item');
+    
+    // 防止重复点击
     const button = event.currentTarget;
+    if (button.dataset.processing === "true") return;
+    button.dataset.processing = "true";
+    
+    const hiddenItems = document.querySelectorAll('.hidden-activity-item');
     
     if (hiddenItems.length > 0) {
-        // 检查当前状态：如果第一个隐藏项目是隐藏的，说明当前是收起状态，需要展开
-        const firstHiddenItem = hiddenItems[0];
-        // 检查元素是否隐藏：通过style.display或CSS类
-        const isCurrentlyHidden = firstHiddenItem.style.display === 'none' || 
-                                 window.getComputedStyle(firstHiddenItem).display === 'none';
+        // 检查是否还有更多项目可以显示
+        const totalHiddenItems = hiddenItems.length;
+        const remainingItems = totalHiddenItems - (currentVisibleActivityCount - 5); // 5是初始显示数量
         
-        if (isCurrentlyHidden) {
-            // 当前是收起状态，展开所有隐藏项目
-            hiddenItems.forEach(item => {
-                item.style.display = 'block';
+        if (remainingItems > 0) {
+            // 还有更多项目可以显示，展开下一批
+            const itemsToShow = Math.min(activityIncrement, remainingItems);
+            const startIndex = currentVisibleActivityCount - 5; // 从当前显示数量开始
+            
+            // 使用requestAnimationFrame进行更流畅的DOM操作
+            requestAnimationFrame(() => {
+                // 批量处理DOM操作减少重排
+                for (let i = startIndex; i < startIndex + itemsToShow; i++) {
+                    if (hiddenItems[i]) {
+                        hiddenItems[i].style.display = 'block';
+                    }
+                }
+                
+                lastExpandedCount = currentVisibleActivityCount;
+                currentVisibleActivityCount += itemsToShow;
+                
+                // 显示收起按钮
+                const collapseButton = document.querySelector('.collapse-button');
+                if (collapseButton) {
+                    collapseButton.style.display = 'block';
+                }
+                
+                // 使用第二个requestAnimationFrame确保DOM已更新
+                requestAnimationFrame(() => {
+                    // 找到最后一个新显示的项目
+                    const lastNewItem = hiddenItems[startIndex + itemsToShow - 1];
+                    if (lastNewItem) {
+                        // 计算位置而不是使用scrollIntoView
+                        const rect = lastNewItem.getBoundingClientRect();
+                        const targetY = window.pageYOffset + rect.top - window.innerHeight/2; // 居中显示
+                        
+                        // 使用CSS控制的平滑滚动（更丝滑的效果）
+                        document.documentElement.style.scrollBehavior = 'smooth';
+                        window.scrollTo({
+                            top: targetY
+                        });
+                        
+                        // 滚动完成后恢复默认滚动行为
+                        setTimeout(() => {
+                            document.documentElement.style.scrollBehavior = '';
+                            // 重置处理状态，允许下一次点击
+                            button.dataset.processing = "false";
+                        }, 600); // 稍微缩短动画时间，让体验更流畅
+                    } else {
+                        button.dataset.processing = "false";
+                    }
+                });
             });
             
+            // 更新按钮文本 - 在requestAnimationFrame中进行，减少重排
+            requestAnimationFrame(() => {
+                if (currentVisibleActivityCount - 5 >= totalHiddenItems) {
+                    // 所有项目都已显示，显示"回到顶端"按钮，隐藏收起按钮
             button.innerHTML = `
-                Show less activity
+                        Back to top
                 <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
                     <path d="M3.22 10.53a.749.749 0 0 1 0-1.06l4.25-4.25a.749.749 0 0 1 1.06 0l4.25 4.25a.749.749 0 1 1-1.06 1.06L8 6.811 4.28 10.53a.749.749 0 0 1-1.06 0Z"></path>
                 </svg>
             `;
+                    // 隐藏收起按钮
+                    const collapseButton = document.querySelector('.collapse-button');
+                    if (collapseButton) {
+                        collapseButton.style.display = 'none';
+                    }
         } else {
-            // 当前是展开状态，收起所有隐藏项目
-            hiddenItems.forEach(item => {
-                item.style.display = 'none';
+                    // 还有更多项目可以显示
+                    const nextBatch = Math.min(activityIncrement, remainingItems - itemsToShow);
+                    button.innerHTML = `
+                        Show ${nextBatch} more activities
+                        <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                            <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+                        </svg>
+                    `;
+                }
             });
-            
-            button.innerHTML = `
-                Show more activity
-                <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
-                    <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
-                </svg>
-            `;
-            
-            // 收起后滚动到贡献图的顶部
-            const contributionsSection = document.querySelector('.contributions');
-            if (contributionsSection) {
-                contributionsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+            // 检查按钮当前状态，如果是"Back to top"就直接滚动到顶部
+            if (button.textContent.includes('Back to top')) {
+                // 收起所有隐藏项目
+                hiddenItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+                
+                // 重置计数器
+                currentVisibleActivityCount = 5;
+                lastExpandedCount = 5;
+                
+                // 隐藏收起按钮
+                const collapseButton = document.querySelector('.collapse-button');
+                if (collapseButton) {
+                    collapseButton.style.display = 'none';
+                }
+                
+                // 更新按钮文本
+                button.innerHTML = `
+                    Show more activity
+                    <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                        <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+                    </svg>
+                `;
+                
+                // 直接滚动到activity-timeline的底部
+                const activityTimeline = document.querySelector('.activity-timeline');
+                if (activityTimeline) {
+                    // 找到timeline的底部位置
+                    const rect = activityTimeline.getBoundingClientRect();
+                    const targetY = window.pageYOffset + rect.top + rect.height - window.innerHeight +20 // -100px的偏移，让位置再往上一点
+                    
+                    // 使用CSS控制的平滑滚动
+                    document.documentElement.style.scrollBehavior = 'smooth';
+                    window.scrollTo({
+                        top: targetY
+                    });
+                    
+                    // 滚动完成后恢复默认滚动行为并重置处理状态
+                    setTimeout(() => {
+                        document.documentElement.style.scrollBehavior = '';
+                        button.dataset.processing = "false";
+                    }, 500);
+                } else {
+                    // 如果找不到activity-timeline，尝试找show-more按钮
+                    const showMoreSection = document.querySelector('.show-more');
+                    if (showMoreSection) {
+                        // 使用CSS控制的平滑滚动
+                        document.documentElement.style.scrollBehavior = 'smooth';
+                        showMoreSection.scrollIntoView({block: 'center'});
+                        
+                        setTimeout(() => {
+                            document.documentElement.style.scrollBehavior = '';
+                            button.dataset.processing = "false";
+                        }, 500);
+                    } else {
+                        // 都找不到，回到顶部
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                        
+                        setTimeout(() => {
+                            button.dataset.processing = "false";
+                        }, 500);
+                    }
+                }
+                
+                return; // 不执行下面的收起逻辑
+            } else {
+                // 如果不是Back to top按钮，重置处理状态
+                button.dataset.processing = "false";
             }
+            
+            // 先计算滚动目标位置，减少布局抖动
+            const contributionsSection = document.querySelector('.contributions');
+            let targetY = 0;
+            
+            if (contributionsSection) {
+                // 使用直接计算位置的方式代替scrollIntoView
+                const rect = contributionsSection.getBoundingClientRect();
+                targetY = window.pageYOffset + rect.top;
+            }
+            
+            // 使用requestAnimationFrame批量处理DOM操作
+            requestAnimationFrame(() => {
+                // 所有项目都已显示，收起所有隐藏项目
+                hiddenItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+                
+                // 重置计数器
+                currentVisibleActivityCount = 5;
+                lastExpandedCount = 5;
+                
+                // 隐藏收起按钮
+                const collapseButton = document.querySelector('.collapse-button');
+                if (collapseButton) {
+                    collapseButton.style.display = 'none';
+                }
+                
+                button.innerHTML = `
+                    Show more activity
+                    <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                        <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+                    </svg>
+                `;
+                
+                // 确保DOM已更新后再滚动
+                requestAnimationFrame(() => {
+                    if (contributionsSection) {
+                        // 使用CSS控制的平滑滚动（更丝滑的效果）
+                        document.documentElement.style.scrollBehavior = 'smooth';
+                        window.scrollTo({
+                            top: targetY
+                        });
+                        
+                        // 滚动完成后恢复默认滚动行为
+                        setTimeout(() => {
+                            document.documentElement.style.scrollBehavior = '';
+                            // 重置处理状态，允许下一次点击
+                            button.dataset.processing = "false";
+                        }, 600); // 缩短动画时间，让体验更流畅
+                    } else {
+                        button.dataset.processing = "false";
+                    }
+                });
+            });
         }
+    }
+}
+
+// 添加收起按钮功能
+function collapseActivity(event) {
+    event.preventDefault();
+    
+    // 防止重复点击
+    const button = event.currentTarget;
+    if (button.dataset.processing === "true") return;
+    button.dataset.processing = "true";
+    
+    // 使用性能更好的方式获取元素
+    const hiddenItems = document.querySelectorAll('.hidden-activity-item');
+    
+    if (hiddenItems.length > 0) {
+        const totalHiddenItems = hiddenItems.length;
+        
+        if (currentVisibleActivityCount > 5) {
+            // 检查是否到达底部（所有项目都已显示）
+            const isAtBottom = currentVisibleActivityCount - 5 >= totalHiddenItems;
+            
+            // 先计算滚动目标位置，减少布局抖动
+            const showMoreSection = document.querySelector('.show-more');
+            let targetY = 0;
+            
+            if (showMoreSection) {
+                const rect = showMoreSection.getBoundingClientRect();
+                // 根据是否从底部收起来决定不同的偏移量，增加偏移距离
+                const offsetDistance = isAtBottom ? 1000 : 1400; // 增加偏移量，收回更大距离
+                targetY = window.pageYOffset + rect.top - offsetDistance;
+            }
+            
+            // 一次性执行所有DOM操作，避免多次重排
+            if (isAtBottom) {
+                // 到底部时，收起全部
+                hiddenItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+                currentVisibleActivityCount = 5;
+                lastExpandedCount = 5;
+            } else {
+                // 收起最近展开的部分
+                const itemsToHide = Math.min(activityIncrement, currentVisibleActivityCount - 5);
+                const startIndex = Math.max(0, currentVisibleActivityCount - 5 - itemsToHide);
+                
+                // 记录当前显示数量
+                const previousCount = currentVisibleActivityCount;
+                
+                // 先更新计数器，确保状态一致
+                currentVisibleActivityCount = Math.max(5, currentVisibleActivityCount - itemsToHide);
+                
+                // 执行DOM操作
+                for (let i = startIndex; i < startIndex + itemsToHide; i++) {
+                    if (i >= 0 && i < hiddenItems.length && hiddenItems[i]) {
+                        hiddenItems[i].style.display = 'none';
+                    }
+                }
+                
+                // 更新上次展开位置
+                lastExpandedCount = previousCount - itemsToHide;
+            }
+            
+            // 更新展开按钮文本（只在非底部时）
+            if (!isAtBottom) {
+                const remainingItems = totalHiddenItems - (currentVisibleActivityCount - 5);
+                if (remainingItems > 0) {
+                    const nextBatch = Math.min(activityIncrement, remainingItems);
+                    const expandButton = document.querySelector('.show-more-button');
+                    if (expandButton) {
+                        expandButton.innerHTML = `
+                            Show ${nextBatch} more activities
+                            <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                                <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+                            </svg>
+                        `;
+                    }
+                }
+            }
+            
+            // 如果收起后回到初始状态，隐藏收起按钮
+            if (currentVisibleActivityCount <= 5) {
+                button.style.display = 'none';
+            } else {
+                // 确保收起按钮在非初始状态下保持显示
+                button.style.display = 'flex';
+            }
+            
+            // 如果到达底部，更新展开按钮文本
+            if (isAtBottom) {
+                const expandButton = document.querySelector('.show-more-button');
+                if (expandButton) {
+                    expandButton.innerHTML = `
+                        Show more activity
+                        <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                            <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+                        </svg>
+                    `;
+                }
+            }
+            
+            // 立即开始流畅的滚动动画
+            if (showMoreSection) {
+                // 使用CSS控制的平滑滚动（更丝滑的效果）
+                document.documentElement.style.scrollBehavior = 'smooth';
+                window.scrollTo({
+                    top: targetY
+                });
+                
+                // 滚动完成后恢复默认滚动行为并重置处理状态
+                setTimeout(() => {
+                    document.documentElement.style.scrollBehavior = '';
+                    button.dataset.processing = "false";
+                }, 500); // 缩短时间让交互更流畅
+            } else {
+                button.dataset.processing = "false";
+            }
+        } else {
+            // 重置处理状态
+            button.dataset.processing = "false";
+        }
+    } else {
+        // 重置处理状态
+        button.dataset.processing = "false";
     }
 }
 
@@ -2900,9 +3273,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     } catch (error) {
         console.error('Error loading content:', error);
         contentArea.innerHTML = `
-            <div class="error-message">
-                <h3>加载内容时出错</h3>
-                <p>请稍后再试</p>
+            <div class="blankslate">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <h3>加载失败</h3>
+                <p>无法加载内容，请稍后重试</p>
             </div>
         `;
     } finally {
@@ -2958,9 +3334,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             } catch (error) {
                 console.error('Error loading content:', error);
                 contentArea.innerHTML = `
-                    <div class="error-message">
-                        <h3>加载内容时出错</h3>
-                        <p>请稍后再试</p>
+                    <div class="blankslate">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <h3>加载失败</h3>
+                        <p>无法加载内容，请稍后重试</p>
                     </div>
                 `;
             } finally {
@@ -3328,9 +3707,9 @@ async function renderArticles() {
     contentArea.innerHTML = ''; // 清除旧内容
     showSkeletonLoading();
 
-    const articles = await fetchArticlesData();
-    console.log("渲染文章时接收到的文章数据:", articles); // 添加日志
-    hideSkeletonLoading();
+    try {
+        const articles = await fetchArticlesData();
+        console.log("渲染文章时接收到的文章数据:", articles); // 添加日志
 
     if (articles && articles.length > 0) {
         let articlesContentHTML = `<div class="articles-grid">`;
@@ -3367,6 +3746,7 @@ async function renderArticles() {
         fullHTML += `</div>`; // Close articles-section div
 
         contentArea.innerHTML = fullHTML;
+        hideSkeletonLoading();
 
         // 为文章卡片添加点击事件监听器
         document.querySelectorAll('.post-card').forEach(card => {
@@ -3389,9 +3769,36 @@ async function renderArticles() {
 
     } else {
         console.log("articles 数组为空或无效，显示暂无文章可显示。"); // 添加日志
-        contentArea.innerHTML = '<p>暂无文章可显示。</p>';
+        contentArea.innerHTML = `
+            <div class="blankslate">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14,2 14,8 20,8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10,9 9,9 8,9"></polyline>
+                </svg>
+                <h3>暂无文章</h3>
+                <p>还没有发布任何文章</p>
+            </div>
+        `;
+        hideSkeletonLoading();
     }
-    initLightbox(); // 重新初始化灯箱
+    } catch (error) {
+        console.error('Error rendering articles:', error);
+        contentArea.innerHTML = `
+            <div class="blankslate">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <h3>加载失败</h3>
+                <p>无法加载文章内容，请稍后重试</p>
+            </div>
+        `;
+        hideSkeletonLoading();
+    } finally {
+        initLightbox(); // 重新初始化灯箱
+    }
 }
 
 // 加载更多文章的函数
@@ -3578,11 +3985,31 @@ function showProjectTip() {
         tip.innerHTML = `
             <div class="tip-content">
                 <p>点击卡片可以查看项目详情</p>
-                <button onclick="this.parentElement.parentElement.remove()">知道了</button>
+                <button onclick="hideProjectTip(this.parentElement.parentElement)">知道了</button>
             </div>
         `;
         document.body.appendChild(tip);
+        
+        // 添加显示动画
+        setTimeout(() => {
+            tip.classList.add('show');
+        }, 10);
+        
         localStorage.setItem('hasShownProjectTip', 'true');
+    }
+}
+
+// 添加隐藏项目提示的函数
+function hideProjectTip(tipElement) {
+    if (tipElement) {
+        tipElement.classList.remove('show');
+        tipElement.classList.add('hide');
+        // 等待动画完成后再移除元素
+        setTimeout(() => {
+            if (tipElement.parentNode) {
+                tipElement.parentNode.removeChild(tipElement);
+            }
+        }, 300); // 与CSS动画时间保持一致
     }
 }
 
@@ -3808,7 +4235,7 @@ function initActivityChart(container) {
 async function fetchChangelogData() {
     try {
         const CHANGELOG_API_CONFIG = {
-            URL: "https://open.apisql.cn/api/daily/$rest",
+            URL: "",
             Method: "post",
             Headers: {
                 "Accept": "application/json, text/plain, */*",
@@ -4019,4 +4446,120 @@ function formatMonth(monthStr) {
     // 用Date对象生成英文月份
     const date = new Date(year, parseInt(month) - 1);
     return date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+}
+
+// 贡献图工具提示功能
+let tooltipElement = null;
+
+function showContributionTooltip(event, date, contributions) {
+    // 如果工具提示已存在，直接更新内容
+    if (!tooltipElement) {
+        tooltipElement = document.createElement('div');
+        tooltipElement.className = 'contribution-tooltip';
+        document.body.appendChild(tooltipElement);
+    }
+    
+    // 更新内容
+    tooltipElement.innerHTML = `
+        <div class="tooltip-date">${date}</div>
+        <div class="tooltip-contributions">${contributions === 0 ? 'No contributions' : contributions === 1 ? '1 contribution' : `${contributions} contributions`}</div>
+    `;
+    
+    // 计算位置
+    const rect = event.target.getBoundingClientRect();
+    
+    let left = rect.left + (rect.width / 2) - 100; // 假设工具提示宽度约200px
+    let top = rect.top - 40; // 假设工具提示高度约40px
+    
+    // 边界检查
+    if (left < 8) left = 8;
+    if (left > window.innerWidth - 208) {
+        left = window.innerWidth - 208;
+    }
+    if (top < 8) {
+        top = rect.bottom + 8;
+    }
+    
+    tooltipElement.style.left = left + 'px';
+    tooltipElement.style.top = top + 'px';
+    tooltipElement.classList.add('show');
+}
+
+function hideContributionTooltip() {
+    if (tooltipElement) {
+        tooltipElement.classList.remove('show');
+    }
+}
+
+// 添加事件委托处理贡献图工具提示
+document.addEventListener('DOMContentLoaded', function() {
+    // 使用事件委托处理贡献图单元格的鼠标事件
+    document.addEventListener('mouseover', function(event) {
+        if (event.target.classList.contains('contribution-cell')) {
+            const date = event.target.dataset.tooltipDate;
+            const contributions = parseInt(event.target.dataset.tooltipContributions);
+            if (date && !isNaN(contributions)) {
+                showContributionTooltip(event, date, contributions);
+            }
+        }
+    });
+    
+    document.addEventListener('mouseout', function(event) {
+        if (event.target.classList.contains('contribution-cell')) {
+            hideContributionTooltip();
+        }
+    });
+});
+
+// 添加触摸事件支持，实现长按效果
+function addTouchFeedback() {
+    // 获取所有需要添加触摸反馈的按钮
+    const touchButtons = document.querySelectorAll('.show-more-button, .activity-action-btn');
+    
+    touchButtons.forEach(button => {
+        // 触摸开始时添加active-touch类
+        button.addEventListener('touchstart', function(e) {
+            this.classList.add('active-touch');
+            // 不阻止默认行为，允许点击事件发生
+        });
+        
+        // 触摸结束或取消时移除active-touch类
+        button.addEventListener('touchend', function() {
+            this.classList.remove('active-touch');
+        });
+        
+        button.addEventListener('touchcancel', function() {
+            this.classList.remove('active-touch');
+        });
+        
+        // 触摸移出按钮区域时也移除效果
+        button.addEventListener('touchmove', function(e) {
+            const touch = e.touches[0];
+            const buttonRect = this.getBoundingClientRect();
+            
+            // 检查触摸点是否在按钮区域外
+            if (touch.clientX < buttonRect.left || touch.clientX > buttonRect.right ||
+                touch.clientY < buttonRect.top || touch.clientY > buttonRect.bottom) {
+                this.classList.remove('active-touch');
+            }
+        });
+    });
+}
+
+// 在页面加载完成后初始化触摸反馈
+window.addEventListener('load', function() {
+    // 初始化触摸反馈
+    addTouchFeedback();
+});
+
+// 修改现有的showMoreButton创建函数，添加触摸反馈
+const originalCreateShowMoreButton = window.createShowMoreButton || function(){};
+window.createShowMoreButton = function() {
+    // 调用原始函数
+    const result = originalCreateShowMoreButton.apply(this, arguments);
+    
+    // 为新创建的按钮添加触摸反馈
+    setTimeout(addTouchFeedback, 0);
+    
+    return result;
 }
