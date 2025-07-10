@@ -47,6 +47,8 @@
     --bg-secondary-dark: #2d333b;
     --site-info-value: #586069;
     --site-info-value-hover: #0366d6;
+    --skill-bg-hover: #c0c0c0; /* 更深的灰色，增强触摸反馈对比度 */
+    --card-bg-hover: #2d333b;
 }
 
 [data-theme="dark"] {
@@ -74,6 +76,7 @@
     --readme-bg: #0d1117;
     --commit-item-bg: #0d1117;
     --code-block-bg: #161b22;
+    --card-bg-hover: #3a414a; /* 更亮的背景色，增强触摸反馈对比度 */
 }
 
 body {
@@ -1145,8 +1148,10 @@ body {
     border-radius: 2px;
     background-color: var(--contribution-bg);
     position: relative;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    will-change: background-color;
 }
 
 .contribution-cell[data-level="0"] { background-color: var(--contribution-bg); }
@@ -3625,11 +3630,29 @@ margin-left: auto; /* 保持靠右 */
 
 .ongoing-project-title {
     font-size: 20px;
-    margin-bottom: 25px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
+
+/* 桌面端样式 - 屏幕宽度大于768px时应用 */
+@media (min-width: 769px) {
+    .ongoing-project-title {
+        margin-top: 26px;  /* 桌面端上间距 */
+        margin-bottom: 27px;  /* 桌面端下间距 */
+    }
+}
+
+/* 移动端样式 - 屏幕宽度小于等于768px时应用 */
+@media (max-width: 768px) {
+    .ongoing-project-title {
+        margin-top: -3.5px;  /* 移动端上间距 */
+        margin-bottom: 24.2px;  /* 移动端下间距 */
+         font-size: 20px;  /* 移动端字体适当减小 */
+        
+    }
+}    
+   
 
 .ongoing-project-title svg {
     width: 24px;
@@ -5306,11 +5329,19 @@ margin-left: auto; /* 保持靠右 */
     position: fixed;
     top: 20px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -100%);
     z-index: 1002;
-    animation: slideDown 0.3s ease;
     width: 90%;
     max-width: 400px;
+    opacity: 0;
+}
+
+.project-tip.show {
+    animation: slideDown 0.3s ease forwards;
+}
+
+.project-tip.hide {
+    animation: slideUp 0.3s ease forwards;
 }
 
 @keyframes slideDown {
@@ -5321,6 +5352,17 @@ margin-left: auto; /* 保持靠右 */
     to {
         transform: translate(-50%, 0);
         opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    to {
+        transform: translate(-50%, -100%);
+        opacity: 0;
     }
 }
 
@@ -6727,4 +6769,198 @@ margin-left: auto; /* 保持靠右 */
 [data-theme="light"] .wechat-popup a:hover {
     color: #24292f;
     text-decoration: none;
+}
+
+/* 贡献图工具提示样式 */
+.contribution-tooltip {
+    position: fixed;
+    z-index: 10000;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text-color);
+    pointer-events: none;
+    display: none;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.contribution-tooltip.show {
+    display: block;
+}
+
+.tooltip-date {
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: var(--text-color);
+}
+
+.tooltip-contributions {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .contribution-tooltip {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .tooltip-date {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .tooltip-contributions {
+    color: var(--text-secondary);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .contribution-tooltip {
+        font-size: 11px;
+        padding: 6px 10px;
+        max-width: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contribution-tooltip {
+        font-size: 10px;
+        padding: 5px 8px;
+        max-width: 160px;
+    }
+}
+
+/* 按钮组样式 */
+.button-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* 统一展开/收起按钮样式 */
+.activity-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.25s, color 0.2s;
+    outline: none;
+    gap: 6px;
+}
+
+.activity-action-btn:hover {
+    background-color: rgba(0,0,0,0.08);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .activity-action-btn:hover {
+    background-color: rgba(255,255,255,0.08);
+    color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+    .button-group {
+        gap: 6px;
+    }
+    .activity-action-btn {
+        height: 36px;
+        font-size: 0.95rem;
+        padding: 0 12px;
+    }
+    .activity-action-btn svg {
+        fill: currentColor;
+        width: 18px;
+        height: 18px;
+        color: inherit;
+    }
+    
+    /* 添加触摸反馈效果 - 长按持续显示 */
+    .show-more-button:active,
+    .show-more-button.active-touch {
+        background-color: var(--skill-bg-hover) !important;
+        transition: none; /* 移除过渡效果，立即显示反馈 */
+    }
+    
+    .activity-action-btn:active,
+    .activity-action-btn.active-touch {
+        background-color: var(--skill-bg-hover) !important;
+        transition: none; /* 移除过渡效果，立即显示反馈 */
+    }
+    
+    [data-theme="dark"] .activity-action-btn:active,
+    [data-theme="dark"] .activity-action-btn.active-touch {
+        background-color: var(--card-bg-hover) !important;
+    }
+    
+    [data-theme="dark"] .show-more-button:active,
+    [data-theme="dark"] .show-more-button.active-touch {
+        background-color: var(--card-bg-hover) !important;
+    }
+
+.activity-action-btn svg path {
+    fill: currentColor;
+}
+
+/* 确保暗色模式下图标颜色正确 */
+[data-theme="dark"] .activity-action-btn svg {
+    fill: currentColor;
+    color: inherit;
+}
+
+[data-theme="dark"] .activity-action-btn svg path {
+    fill: currentColor;
+}
+}
+@media (max-width: 480px) {
+    .button-group {
+        gap: 4px;
+    }
+    .activity-action-btn {
+        height: 32px;
+        font-size: 0.9rem;
+        padding: 0 8px;
+    }
+    .activity-action-btn svg {
+        fill: currentColor;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.collapse-button svg {
+    transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+    .show-more-button:hover {
+        background-color: var(--skill-bg);
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .activity-action-btn:hover {
+        background-color: var(--skill-bg);
+        transform: none;
+        box-shadow: none;
+    }
+    
+    [data-theme="dark"] .activity-action-btn:hover {
+        background-color: var(--card-bg);
+    }
+    
+    [data-theme="dark"] .show-more-button:hover {
+        background-color: var(--card-bg);
+    }
 }
