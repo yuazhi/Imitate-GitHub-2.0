@@ -5813,6 +5813,190 @@ margin-left: auto; /* 保持靠右 */
     border: 1px solid var(--border-color);
 }
 
+/* 随机背景颜色样式 - 护眼配色 */
+.commit-bg-green-bean {
+    background-color: #C7EDCC !important;
+    border-color: #2d5a2d !important;
+}
+
+.commit-bg-white {
+    background-color: #FFFFFF !important;
+    border-color: #666666 !important;
+}
+
+.commit-bg-almond {
+    background-color: #FAF9DE !important;
+    border-color: #8b8b5a !important;
+}
+
+.commit-bg-autumn {
+    background-color: #FFF2E2 !important;
+    border-color: #d4a574 !important;
+}
+
+.commit-bg-rouge {
+    background-color: #FDE6E0 !important;
+    border-color: #d47474 !important;
+}
+
+.commit-bg-sky-blue {
+    background-color: #DCE2F1 !important;
+    border-color: #5a74a5 !important;
+}
+
+.commit-bg-purple {
+    background-color: #E9EBFE !important;
+    border-color: #8b8bd4 !important;
+}
+
+.commit-bg-aurora {
+    background-color: #EAEAEF !important;
+    border-color: #8b8b8b !important;
+}
+
+.commit-bg-grass {
+    background-color: #E3EDCD !important;
+    border-color: #6b8b4a !important;
+}
+
+/* 暗色模式下的随机背景颜色 - 护眼配色 */
+[data-theme="dark"] .commit-bg-green-bean {
+    background-color: #1a2d1a !important;
+    border-color: #4a8b4a !important;
+}
+
+[data-theme="dark"] .commit-bg-white {
+    background-color: #2a2a2a !important;
+    border-color: #8b8b8b !important;
+}
+
+[data-theme="dark"] .commit-bg-almond {
+    background-color: #2a2a1a !important;
+    border-color: #8b8b5a !important;
+}
+
+[data-theme="dark"] .commit-bg-autumn {
+    background-color: #2a1a0a !important;
+    border-color: #d4a574 !important;
+}
+
+[data-theme="dark"] .commit-bg-rouge {
+    background-color: #2a1a1a !important;
+    border-color: #d47474 !important;
+}
+
+[data-theme="dark"] .commit-bg-sky-blue {
+    background-color: #1a1a2a !important;
+    border-color: #5a74a5 !important;
+}
+
+[data-theme="dark"] .commit-bg-purple {
+    background-color: #1a1a2a !important;
+    border-color: #8b8bd4 !important;
+}
+
+[data-theme="dark"] .commit-bg-aurora {
+    background-color: #2a2a2a !important;
+    border-color: #8b8b8b !important;
+}
+
+[data-theme="dark"] .commit-bg-grass {
+    background-color: #1a2a1a !important;
+    border-color: #6b8b4a !important;
+}
+
+/* Branch标签随机背景颜色样式 - 护眼配色 */
+.branch-bg-green-bean {
+    background-color: #C7EDCC !important;
+    border-color: #2d5a2d !important;
+}
+
+.branch-bg-white {
+    background-color: #FFFFFF !important;
+    border-color: #666666 !important;
+}
+
+.branch-bg-almond {
+    background-color: #FAF9DE !important;
+    border-color: #8b8b5a !important;
+}
+
+.branch-bg-autumn {
+    background-color: #FFF2E2 !important;
+    border-color: #d4a574 !important;
+}
+
+.branch-bg-rouge {
+    background-color: #FDE6E0 !important;
+    border-color: #d47474 !important;
+}
+
+.branch-bg-sky-blue {
+    background-color: #DCE2F1 !important;
+    border-color: #5a74a5 !important;
+}
+
+.branch-bg-purple {
+    background-color: #E9EBFE !important;
+    border-color: #8b8bd4 !important;
+}
+
+.branch-bg-aurora {
+    background-color: #EAEAEF !important;
+    border-color: #8b8b8b !important;
+}
+
+.branch-bg-grass {
+    background-color: #E3EDCD !important;
+    border-color: #6b8b4a !important;
+}
+
+/* 暗色模式下的branch随机背景颜色 - 护眼配色 */
+[data-theme="dark"] .branch-bg-green-bean {
+    background-color: #1a2d1a !important;
+    border-color: #4a8b4a !important;
+}
+
+[data-theme="dark"] .branch-bg-white {
+    background-color: #2a2a2a !important;
+    border-color: #8b8b8b !important;
+}
+
+[data-theme="dark"] .branch-bg-almond {
+    background-color: #2a2a1a !important;
+    border-color: #8b8b5a !important;
+}
+
+[data-theme="dark"] .branch-bg-autumn {
+    background-color: #2a1a0a !important;
+    border-color: #d4a574 !important;
+}
+
+[data-theme="dark"] .branch-bg-rouge {
+    background-color: #2a1a1a !important;
+    border-color: #d47474 !important;
+}
+
+[data-theme="dark"] .branch-bg-sky-blue {
+    background-color: #1a1a2a !important;
+    border-color: #5a74a5 !important;
+}
+
+[data-theme="dark"] .branch-bg-purple {
+    background-color: #1a1a2a !important;
+    border-color: #8b8bd4 !important;
+}
+
+[data-theme="dark"] .branch-bg-aurora {
+    background-color: #2a2a2a !important;
+    border-color: #8b8b8b !important;
+}
+
+[data-theme="dark"] .branch-bg-grass {
+    background-color: #1a2a1a !important;
+    border-color: #6b8b4a !important;
+}
+
 .commit-message-item {
     margin-bottom: 4px;
     font-size: 12px;
@@ -5827,6 +6011,76 @@ margin-left: auto; /* 保持靠右 */
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
     word-break: break-word;
 }
+
+/* 隐藏的commit消息 */
+.commit-messages-hidden {
+    margin-top: 4px;
+}
+
+/* 展开/收起按钮 */
+.commit-message-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    padding: 4px 8px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-secondary);
+    transition: none;
+    user-select: none;
+}
+
+/* 确保所有状态下按钮保持一致 */
+.commit-message-toggle:hover,
+.commit-message-toggle:active,
+.commit-message-toggle:focus,
+.commit-message-toggle.expanded,
+.commit-message-toggle.expanded:hover,
+.commit-message-toggle.expanded:active,
+.commit-message-toggle.expanded:focus {
+    /* 继承父元素的背景色和边框色，不做任何改变 */
+    background-color: inherit !important;
+    border-color: inherit !important;
+    color: inherit !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.toggle-text {
+    font-weight: 500;
+}
+
+.toggle-icon {
+    transition: none;
+    color: var(--text-secondary);
+}
+
+/* .commit-message-toggle:hover .toggle-icon {
+    color: var(--text-color);
+} */
+
+[data-theme="dark"] .commit-message-toggle {
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* .commit-message-toggle:hover */
+[data-theme="dark"] .commit-message-toggle.expanded {
+    background-color: var(--bg-secondary);
+}
+
+[data-theme="dark"] .toggle-icon {
+    color: var(--text-secondary);
+}
+
+/* .commit-message-toggle:hover .toggle-icon {
+    color: var(--text-color);
+} */
 
 /* 分支标签样式 */
 .branch-tag {
@@ -6964,3 +7218,843 @@ margin-left: auto; /* 保持靠右 */
         background-color: var(--card-bg);
     }
 }
+
+[data-theme="dark"] .commit-message-toggle {
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* 暗色模式下确保所有状态保持一致 */
+[data-theme="dark"] .commit-message-toggle:hover,
+[data-theme="dark"] .commit-message-toggle:active,
+[data-theme="dark"] .commit-message-toggle:focus,
+[data-theme="dark"] .commit-message-toggle.expanded,
+[data-theme="dark"] .commit-message-toggle.expanded:hover,
+[data-theme="dark"] .commit-message-toggle.expanded:active,
+[data-theme="dark"] .commit-message-toggle.expanded:focus {
+    /* 继承父元素的背景色和边框色，不做任何改变 */
+    background-color: inherit !important;
+    border-color: inherit !important;
+    color: inherit !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] .toggle-icon {
+    color: var(--text-secondary);
+}
+
+/* 暗色模式下图标也保持一致 */
+[data-theme="dark"] .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-message-toggle:focus .toggle-icon,
+[data-theme="dark"] .commit-message-toggle.expanded .toggle-icon {
+    color: inherit !important;
+}
+
+/* Commit-message-toggle 跟随背景颜色样式 - 护眼配色 */
+.commit-bg-green-bean .commit-message-toggle,
+.commit-bg-green-bean .commit-message-toggle:hover,
+.commit-bg-green-bean .commit-message-toggle:active,
+.commit-bg-green-bean .commit-message-toggle:focus,
+.commit-bg-green-bean .commit-message-toggle.expanded {
+    background-color: #C7EDCC !important;
+    border-color: #2d5a2d !important;
+    color: #2d5a2d !important;
+}
+
+.commit-bg-white .commit-message-toggle,
+.commit-bg-white .commit-message-toggle:hover,
+.commit-bg-white .commit-message-toggle:active,
+.commit-bg-white .commit-message-toggle:focus,
+.commit-bg-white .commit-message-toggle.expanded {
+    background-color: #FFFFFF !important;
+    border-color: #666666 !important;
+    color: #333333 !important;
+}
+
+.commit-bg-almond .commit-message-toggle,
+.commit-bg-almond .commit-message-toggle:hover,
+.commit-bg-almond .commit-message-toggle:active,
+.commit-bg-almond .commit-message-toggle:focus,
+.commit-bg-almond .commit-message-toggle.expanded {
+    background-color: #FAF9DE !important;
+    border-color: #8b8b5a !important;
+    color: #5a5a3a !important;
+}
+
+.commit-bg-autumn .commit-message-toggle,
+.commit-bg-autumn .commit-message-toggle:hover,
+.commit-bg-autumn .commit-message-toggle:active,
+.commit-bg-autumn .commit-message-toggle:focus,
+.commit-bg-autumn .commit-message-toggle.expanded {
+    background-color: #FFF2E2 !important;
+    border-color: #d4a574 !important;
+    color: #8b6b3a !important;
+}
+
+.commit-bg-rouge .commit-message-toggle,
+.commit-bg-rouge .commit-message-toggle:hover,
+.commit-bg-rouge .commit-message-toggle:active,
+.commit-bg-rouge .commit-message-toggle:focus,
+.commit-bg-rouge .commit-message-toggle.expanded {
+    background-color: #FDE6E0 !important;
+    border-color: #d47474 !important;
+    color: #8b4a4a !important;
+}
+
+.commit-bg-sky-blue .commit-message-toggle,
+.commit-bg-sky-blue .commit-message-toggle:hover,
+.commit-bg-sky-blue .commit-message-toggle:active,
+.commit-bg-sky-blue .commit-message-toggle:focus,
+.commit-bg-sky-blue .commit-message-toggle.expanded {
+    background-color: #DCE2F1 !important;
+    border-color: #5a74a5 !important;
+    color: #3a4a6b !important;
+}
+
+.commit-bg-purple .commit-message-toggle,
+.commit-bg-purple .commit-message-toggle:hover,
+.commit-bg-purple .commit-message-toggle:active,
+.commit-bg-purple .commit-message-toggle:focus,
+.commit-bg-purple .commit-message-toggle.expanded {
+    background-color: #E9EBFE !important;
+    border-color: #8b8bd4 !important;
+    color: #5a5a8b !important;
+}
+
+.commit-bg-aurora .commit-message-toggle,
+.commit-bg-aurora .commit-message-toggle:hover,
+.commit-bg-aurora .commit-message-toggle:active,
+.commit-bg-aurora .commit-message-toggle:focus,
+.commit-bg-aurora .commit-message-toggle.expanded {
+    background-color: #EAEAEF !important;
+    border-color: #8b8b8b !important;
+    color: #5a5a5a !important;
+}
+
+.commit-bg-grass .commit-message-toggle,
+.commit-bg-grass .commit-message-toggle:hover,
+.commit-bg-grass .commit-message-toggle:active,
+.commit-bg-grass .commit-message-toggle:focus,
+.commit-bg-grass .commit-message-toggle.expanded {
+    background-color: #E3EDCD !important;
+    border-color: #6b8b4a !important;
+    color: #4a6b3a !important;
+}
+
+/* 暗色模式下的toggle按钮颜色 - 护眼配色 */
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle,
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle.expanded {
+    background-color: #1a2d1a !important;
+    border-color: #4a8b4a !important;
+    color: #6bcd6b !important;
+}
+
+[data-theme="dark"] .commit-bg-white .commit-message-toggle,
+[data-theme="dark"] .commit-bg-white .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-white .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-white .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-white .commit-message-toggle.expanded {
+    background-color: #2a2a2a !important;
+    border-color: #8b8b8b !important;
+    color: #cccccc !important;
+}
+
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle,
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle.expanded {
+    background-color: #2a2a1a !important;
+    border-color: #8b8b5a !important;
+    color: #cdcd8b !important;
+}
+
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle,
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle.expanded {
+    background-color: #2a1a0a !important;
+    border-color: #d4a574 !important;
+    color: #ffd4a5 !important;
+}
+
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle,
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle.expanded {
+    background-color: #2a1a1a !important;
+    border-color: #d47474 !important;
+    color: #ffa5a5 !important;
+}
+
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle,
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle.expanded {
+    background-color: #1a1a2a !important;
+    border-color: #5a74a5 !important;
+    color: #8ba5d4 !important;
+}
+
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle,
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle.expanded {
+    background-color: #1a1a2a !important;
+    border-color: #8b8bd4 !important;
+    color: #a5a5ff !important;
+}
+
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle,
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle.expanded {
+    background-color: #2a2a2a !important;
+    border-color: #8b8b8b !important;
+    color: #cccccc !important;
+}
+
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle,
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle.expanded {
+    background-color: #1a2a1a !important;
+    border-color: #6b8b4a !important;
+    color: #8bcd6b !important;
+}
+
+/* Toggle图标颜色跟随 - 护眼配色 */
+.commit-bg-green-bean .commit-message-toggle .toggle-icon,
+.commit-bg-green-bean .commit-message-toggle:hover .toggle-icon,
+.commit-bg-green-bean .commit-message-toggle:active .toggle-icon,
+.commit-bg-green-bean .commit-message-toggle.expanded .toggle-icon {
+    color: #2d5a2d !important;
+}
+
+.commit-bg-white .commit-message-toggle .toggle-icon,
+.commit-bg-white .commit-message-toggle:hover .toggle-icon,
+.commit-bg-white .commit-message-toggle:active .toggle-icon,
+.commit-bg-white .commit-message-toggle.expanded .toggle-icon {
+    color: #333333 !important;
+}
+
+.commit-bg-almond .commit-message-toggle .toggle-icon,
+.commit-bg-almond .commit-message-toggle:hover .toggle-icon,
+.commit-bg-almond .commit-message-toggle:active .toggle-icon,
+.commit-bg-almond .commit-message-toggle.expanded .toggle-icon {
+    color: #5a5a3a !important;
+}
+
+.commit-bg-autumn .commit-message-toggle .toggle-icon,
+.commit-bg-autumn .commit-message-toggle:hover .toggle-icon,
+.commit-bg-autumn .commit-message-toggle:active .toggle-icon,
+.commit-bg-autumn .commit-message-toggle.expanded .toggle-icon {
+    color: #8b6b3a !important;
+}
+
+.commit-bg-rouge .commit-message-toggle .toggle-icon,
+.commit-bg-rouge .commit-message-toggle:hover .toggle-icon,
+.commit-bg-rouge .commit-message-toggle:active .toggle-icon,
+.commit-bg-rouge .commit-message-toggle.expanded .toggle-icon {
+    color: #8b4a4a !important;
+}
+
+.commit-bg-sky-blue .commit-message-toggle .toggle-icon,
+.commit-bg-sky-blue .commit-message-toggle:hover .toggle-icon,
+.commit-bg-sky-blue .commit-message-toggle:active .toggle-icon,
+.commit-bg-sky-blue .commit-message-toggle.expanded .toggle-icon {
+    color: #3a4a6b !important;
+}
+
+.commit-bg-purple .commit-message-toggle .toggle-icon,
+.commit-bg-purple .commit-message-toggle:hover .toggle-icon,
+.commit-bg-purple .commit-message-toggle:active .toggle-icon,
+.commit-bg-purple .commit-message-toggle.expanded .toggle-icon {
+    color: #5a5a8b !important;
+}
+
+.commit-bg-aurora .commit-message-toggle .toggle-icon,
+.commit-bg-aurora .commit-message-toggle:hover .toggle-icon,
+.commit-bg-aurora .commit-message-toggle:active .toggle-icon,
+.commit-bg-aurora .commit-message-toggle.expanded .toggle-icon {
+    color: #5a5a5a !important;
+}
+
+.commit-bg-grass .commit-message-toggle .toggle-icon,
+.commit-bg-grass .commit-message-toggle:hover .toggle-icon,
+.commit-bg-grass .commit-message-toggle:active .toggle-icon,
+.commit-bg-grass .commit-message-toggle.expanded .toggle-icon {
+    color: #4a6b3a !important;
+}
+
+/* 新增护眼色的toggle图标颜色 */
+.commit-bg-mist-blue .commit-message-toggle .toggle-icon,
+.commit-bg-mist-blue .commit-message-toggle:hover .toggle-icon,
+.commit-bg-mist-blue .commit-message-toggle:active .toggle-icon,
+.commit-bg-mist-blue .commit-message-toggle.expanded .toggle-icon {
+    color: #22577a !important;
+}
+
+.commit-bg-light-dousha .commit-message-toggle .toggle-icon,
+.commit-bg-light-dousha .commit-message-toggle:hover .toggle-icon,
+.commit-bg-light-dousha .commit-message-toggle:active .toggle-icon,
+.commit-bg-light-dousha .commit-message-toggle.expanded .toggle-icon {
+    color: #3a5a40 !important;
+}
+
+.commit-bg-beige .commit-message-toggle .toggle-icon,
+.commit-bg-beige .commit-message-toggle:hover .toggle-icon,
+.commit-bg-beige .commit-message-toggle:active .toggle-icon,
+.commit-bg-beige .commit-message-toggle.expanded .toggle-icon {
+    color: #6b6b3a !important;
+}
+
+.commit-bg-olive .commit-message-toggle .toggle-icon,
+.commit-bg-olive .commit-message-toggle:hover .toggle-icon,
+.commit-bg-olive .commit-message-toggle:active .toggle-icon,
+.commit-bg-olive .commit-message-toggle.expanded .toggle-icon {
+    color: #5a6b3a !important;
+}
+
+.commit-bg-cyan .commit-message-toggle .toggle-icon,
+.commit-bg-cyan .commit-message-toggle:hover .toggle-icon,
+.commit-bg-cyan .commit-message-toggle:active .toggle-icon,
+.commit-bg-cyan .commit-message-toggle.expanded .toggle-icon {
+    color: #2a6f73 !important;
+}
+
+.commit-bg-lavender .commit-message-toggle .toggle-icon,
+.commit-bg-lavender .commit-message-toggle:hover .toggle-icon,
+.commit-bg-lavender .commit-message-toggle:active .toggle-icon,
+.commit-bg-lavender .commit-message-toggle.expanded .toggle-icon {
+    color: #5a4a6b !important;
+}
+
+/* 暗色模式下的toggle图标颜色 - 护眼配色 */
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-green-bean .commit-message-toggle.expanded .toggle-icon {
+    color: #6bcd6b !important;
+}
+
+[data-theme="dark"] .commit-bg-white .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-white .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-white .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-white .commit-message-toggle.expanded .toggle-icon {
+    color: #cccccc !important;
+}
+
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-almond .commit-message-toggle.expanded .toggle-icon {
+    color: #cdcd8b !important;
+}
+
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-autumn .commit-message-toggle.expanded .toggle-icon {
+    color: #ffd4a5 !important;
+}
+
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-rouge .commit-message-toggle.expanded .toggle-icon {
+    color: #ffa5a5 !important;
+}
+
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-sky-blue .commit-message-toggle.expanded .toggle-icon {
+    color: #8ba5d4 !important;
+}
+
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-purple .commit-message-toggle.expanded .toggle-icon {
+    color: #a5a5ff !important;
+}
+
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-aurora .commit-message-toggle.expanded .toggle-icon {
+    color: #cccccc !important;
+}
+
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-grass .commit-message-toggle.expanded .toggle-icon {
+    color: #8bcd6b !important;
+}
+
+/* 暗色模式下新增护眼色的toggle图标颜色 */
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle.expanded .toggle-icon {
+    color: #90caf9 !important;
+}
+
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle.expanded .toggle-icon {
+    color: #a3c9a8 !important;
+}
+
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle.expanded .toggle-icon {
+    color: #bdb76b !important;
+}
+
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle.expanded .toggle-icon {
+    color: #b7c59a !important;
+}
+
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle.expanded .toggle-icon {
+    color: #7fd8de !important;
+}
+
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle .toggle-icon,
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle:hover .toggle-icon,
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle:active .toggle-icon,
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle.expanded .toggle-icon {
+    color: #b39ddb !important;
+}
+
+/* 仓库简介标签样式 */
+.repo-description-tag {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #fef3c7;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+[data-theme="dark"] .repo-description-tag {
+    background-color: #451a03;
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* 新增护眼色样式 */
+.commit-bg-mist-blue {
+    background-color: #E3F2FD !important;
+    border-color: #90caf9 !important;
+    color: #22577a !important;
+}
+.commit-bg-light-dousha {
+    background-color: #D6EADF !important;
+    border-color: #a3c9a8 !important;
+    color: #3a5a40 !important;
+}
+.commit-bg-beige {
+    background-color: #F5F5DC !important;
+    border-color: #bdb76b !important;
+    color: #6b6b3a !important;
+}
+.commit-bg-olive {
+    background-color: #E6EED6 !important;
+    border-color: #b7c59a !important;
+    color: #5a6b3a !important;
+}
+.commit-bg-cyan {
+    background-color: #D0F0EF !important;
+    border-color: #7fd8de !important;
+    color: #2a6f73 !important;
+}
+.commit-bg-lavender {
+    background-color: #EDE7F6 !important;
+    border-color: #b39ddb !important;
+    color: #5a4a6b !important;
+}
+
+/* 新增护眼色的commit-message-toggle样式 */
+.commit-bg-mist-blue .commit-message-toggle,
+.commit-bg-mist-blue .commit-message-toggle:hover,
+.commit-bg-mist-blue .commit-message-toggle:active,
+.commit-bg-mist-blue .commit-message-toggle:focus,
+.commit-bg-mist-blue .commit-message-toggle.expanded {
+    background-color: #E3F2FD !important;
+    border-color: #90caf9 !important;
+    color: #22577a !important;
+}
+
+.commit-bg-light-dousha .commit-message-toggle,
+.commit-bg-light-dousha .commit-message-toggle:hover,
+.commit-bg-light-dousha .commit-message-toggle:active,
+.commit-bg-light-dousha .commit-message-toggle:focus,
+.commit-bg-light-dousha .commit-message-toggle.expanded {
+    background-color: #D6EADF !important;
+    border-color: #a3c9a8 !important;
+    color: #3a5a40 !important;
+}
+
+.commit-bg-beige .commit-message-toggle,
+.commit-bg-beige .commit-message-toggle:hover,
+.commit-bg-beige .commit-message-toggle:active,
+.commit-bg-beige .commit-message-toggle:focus,
+.commit-bg-beige .commit-message-toggle.expanded {
+    background-color: #F5F5DC !important;
+    border-color: #bdb76b !important;
+    color: #6b6b3a !important;
+}
+
+.commit-bg-olive .commit-message-toggle,
+.commit-bg-olive .commit-message-toggle:hover,
+.commit-bg-olive .commit-message-toggle:active,
+.commit-bg-olive .commit-message-toggle:focus,
+.commit-bg-olive .commit-message-toggle.expanded {
+    background-color: #E6EED6 !important;
+    border-color: #b7c59a !important;
+    color: #5a6b3a !important;
+}
+
+.commit-bg-cyan .commit-message-toggle,
+.commit-bg-cyan .commit-message-toggle:hover,
+.commit-bg-cyan .commit-message-toggle:active,
+.commit-bg-cyan .commit-message-toggle:focus,
+.commit-bg-cyan .commit-message-toggle.expanded {
+    background-color: #D0F0EF !important;
+    border-color: #7fd8de !important;
+    color: #2a6f73 !important;
+}
+
+.commit-bg-lavender .commit-message-toggle,
+.commit-bg-lavender .commit-message-toggle:hover,
+.commit-bg-lavender .commit-message-toggle:active,
+.commit-bg-lavender .commit-message-toggle:focus,
+.commit-bg-lavender .commit-message-toggle.expanded {
+    background-color: #EDE7F6 !important;
+    border-color: #b39ddb !important;
+    color: #5a4a6b !important;
+}
+
+.branch-bg-mist-blue {
+    background-color: #E3F2FD !important;
+    border-color: #90caf9 !important;
+    color: #22577a !important;
+}
+.branch-bg-light-dousha {
+    background-color: #D6EADF !important;
+    border-color: #a3c9a8 !important;
+    color: #3a5a40 !important;
+}
+.branch-bg-beige {
+    background-color: #F5F5DC !important;
+    border-color: #bdb76b !important;
+    color: #6b6b3a !important;
+}
+.branch-bg-olive {
+    background-color: #E6EED6 !important;
+    border-color: #b7c59a !important;
+    color: #5a6b3a !important;
+}
+.branch-bg-cyan {
+    background-color: #D0F0EF !important;
+    border-color: #7fd8de !important;
+    color: #2a6f73 !important;
+}
+.branch-bg-lavender {
+    background-color: #EDE7F6 !important;
+    border-color: #b39ddb !important;
+    color: #5a4a6b !important;
+}
+
+/* 暗色模式下新增护眼色 */
+[data-theme="dark"] .commit-bg-mist-blue {
+    background-color: #1a232a !important;
+    border-color: #90caf9 !important;
+    color: #90caf9 !important;
+}
+[data-theme="dark"] .commit-bg-light-dousha {
+    background-color: #1a2a23 !important;
+    border-color: #a3c9a8 !important;
+    color: #a3c9a8 !important;
+}
+[data-theme="dark"] .commit-bg-beige {
+    background-color: #2a2a1a !important;
+    border-color: #bdb76b !important;
+    color: #bdb76b !important;
+}
+[data-theme="dark"] .commit-bg-olive {
+    background-color: #232a1a !important;
+    border-color: #b7c59a !important;
+    color: #b7c59a !important;
+}
+[data-theme="dark"] .commit-bg-cyan {
+    background-color: #1a2a2a !important;
+    border-color: #7fd8de !important;
+    color: #7fd8de !important;
+}
+[data-theme="dark"] .commit-bg-lavender {
+    background-color: #231a2a !important;
+    border-color: #b39ddb !important;
+    color: #b39ddb !important;
+}
+
+/* 暗色模式下新增护眼色的commit-message-toggle样式 */
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle,
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-mist-blue .commit-message-toggle.expanded {
+    background-color: #1a232a !important;
+    border-color: #90caf9 !important;
+    color: #90caf9 !important;
+}
+
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle,
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-light-dousha .commit-message-toggle.expanded {
+    background-color: #1a2a23 !important;
+    border-color: #a3c9a8 !important;
+    color: #a3c9a8 !important;
+}
+
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle,
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-beige .commit-message-toggle.expanded {
+    background-color: #2a2a1a !important;
+    border-color: #bdb76b !important;
+    color: #bdb76b !important;
+}
+
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle,
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-olive .commit-message-toggle.expanded {
+    background-color: #232a1a !important;
+    border-color: #b7c59a !important;
+    color: #b7c59a !important;
+}
+
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle,
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-cyan .commit-message-toggle.expanded {
+    background-color: #1a2a2a !important;
+    border-color: #7fd8de !important;
+    color: #7fd8de !important;
+}
+
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle,
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle:hover,
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle:active,
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle:focus,
+[data-theme="dark"] .commit-bg-lavender .commit-message-toggle.expanded {
+    background-color: #231a2a !important;
+    border-color: #b39ddb !important;
+    color: #b39ddb !important;
+}
+[data-theme="dark"] .branch-bg-mist-blue {
+    background-color: #1a232a !important;
+    border-color: #90caf9 !important;
+    color: #90caf9 !important;
+}
+[data-theme="dark"] .branch-bg-light-dousha {
+    background-color: #1a2a23 !important;
+    border-color: #a3c9a8 !important;
+    color: #a3c9a8 !important;
+}
+[data-theme="dark"] .branch-bg-beige {
+    background-color: #2a2a1a !important;
+    border-color: #bdb76b !important;
+    color: #bdb76b !important;
+}
+[data-theme="dark"] .branch-bg-olive {
+    background-color: #232a1a !important;
+    border-color: #b7c59a !important;
+    color: #b7c59a !important;
+}
+[data-theme="dark"] .branch-bg-cyan {
+    background-color: #1a2a2a !important;
+    border-color: #7fd8de !important;
+    color: #7fd8de !important;
+}
+[data-theme="dark"] .branch-bg-lavender {
+    background-color: #231a2a !important;
+    border-color: #b39ddb !important;
+    color: #b39ddb !important;
+}
+
+/* Commit SHA 护眼色样式 */
+.sha-bg-green-bean {
+    background-color: #C7EDCC !important;
+    border-color: #2d5a2d !important;
+    color: #2d5a2d !important;
+}
+.sha-bg-almond {
+    background-color: #FAF9DE !important;
+    border-color: #8b8b5a !important;
+    color: #5a5a3a !important;
+}
+.sha-bg-autumn {
+    background-color: #FFF2E2 !important;
+    border-color: #d4a574 !important;
+    color: #8b6b3a !important;
+}
+.sha-bg-rouge {
+    background-color: #FDE6E0 !important;
+    border-color: #d47474 !important;
+    color: #8b4a4a !important;
+}
+.sha-bg-sky-blue {
+    background-color: #DCE2F1 !important;
+    border-color: #5a74a5 !important;
+    color: #3a4a6b !important;
+}
+.sha-bg-purple {
+    background-color: #E9EBFE !important;
+    border-color: #8b8bd4 !important;
+    color: #5a5a8b !important;
+}
+.sha-bg-aurora {
+    background-color: #EAEAEF !important;
+    border-color: #8b8b8b !important;
+    color: #5a5a5a !important;
+}
+.sha-bg-grass {
+    background-color: #E3EDCD !important;
+    border-color: #6b8b4a !important;
+    color: #4a6b3a !important;
+}
+.sha-bg-mist-blue {
+    background-color: #E3F2FD !important;
+    border-color: #90caf9 !important;
+    color: #22577a !important;
+}
+.sha-bg-light-dousha {
+    background-color: #D6EADF !important;
+    border-color: #a3c9a8 !important;
+    color: #3a5a40 !important;
+}
+.sha-bg-beige {
+    background-color: #F5F5DC !important;
+    border-color: #bdb76b !important;
+    color: #6b6b3a !important;
+}
+.sha-bg-olive {
+    background-color: #E6EED6 !important;
+    border-color: #b7c59a !important;
+    color: #5a6b3a !important;
+}
+.sha-bg-cyan {
+    background-color: #D0F0EF !important;
+    border-color: #7fd8de !important;
+    color: #2a6f73 !important;
+}
+.sha-bg-lavender {
+    background-color: #EDE7F6 !important;
+    border-color: #b39ddb !important;
+    color: #5a4a6b !important;
+}
+
+[data-theme="dark"] .sha-bg-green-bean {
+    background-color: #1a2d1a !important;
+    border-color: #4a8b4a !important;
+    color: #6bcd6b !important;
+}
+[data-theme="dark"] .sha-bg-almond {
+    background-color: #2a2a1a !important;
+    border-color: #8b8b5a !important;
+    color: #cdcd8b !important;
+}
+[data-theme="dark"] .sha-bg-autumn {
+    background-color: #2a1a0a !important;
+    border-color: #d4a574 !important;
+    color: #ffd4a5 !important;
+}
+[data-theme="dark"] .sha-bg-rouge {
+    background-color: #2a1a1a !important;
+    border-color: #d47474 !important;
+    color: #ffa5a5 !important;
+}
+[data-theme="dark"] .sha-bg-sky-blue {
+    background-color: #1a1a2a !important;
+    border-color: #5a74a5 !important;
+    color: #8ba5d4 !important;
+}
+[data-theme="dark"] .sha-bg-purple {
+    background-color: #1a1a2a !important;
+    border-color: #8b8bd4 !important;
+    color: #a5a5ff !important;
+}
+[data-theme="dark"] .sha-bg-aurora {
+    background-color: #2a2a2a !important;
+    border-color: #8b8b8b !important;
+    color: #cccccc !important;
+}
+[data-theme="dark"] .sha-bg-grass {
+    background-color: #1a2a1a !important;
+    border-color: #6b8b4a !important;
+    color: #8bcd6b !important;
+}
+[data-theme="dark"] .sha-bg-mist-blue {
+    background-color: #1a232a !important;
+    border-color: #90caf9 !important;
+    color: #90caf9 !important;
+}
+[data-theme="dark"] .sha-bg-light-dousha {
+    background-color: #1a2a23 !important;
+    border-color: #a3c9a8 !important;
+    color: #a3c9a8 !important;
+}
+[data-theme="dark"] .sha-bg-beige {
+    background-color: #2a2a1a !important;
+    border-color: #bdb76b !important;
+    color: #bdb76b !important;
+}
+[data-theme="dark"] .sha-bg-olive {
+    background-color: #232a1a !important;
+    border-color: #b7c59a !important;
+    color: #b7c59a !important;
+}
+[data-theme="dark"] .sha-bg-cyan {
+    background-color: #1a2a2a !important;
+    border-color: #7fd8de !important;
+    color: #7fd8de !important;
+}
+[data-theme="dark"] .sha-bg-lavender {
+    background-color: #231a2a !important;
+    border-color: #b39ddb !important;
+    color: #b39ddb !important;
+}
+
