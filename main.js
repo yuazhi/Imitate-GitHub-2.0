@@ -1534,7 +1534,7 @@ function renderActivityTimeline(data, activities = null) {
                                             ${activity.repo}
                                         </a>
                                         ${activity.branch ? `
-                                            <span class="branch-tag">
+                                            <span class="branch-tag ${getRandomBranchBgClass()}">
                                                 <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12">
                                                     <path d="M3.75 1.5a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5H3.75Zm6.75.75V4.25c0 .138.112.25.25.25H12.5v7h-9V2.25h6.5V2.25ZM5 3.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1-.75-.75Zm0 2.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Zm0 2.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path>
                                                 </svg>
@@ -1542,7 +1542,7 @@ function renderActivityTimeline(data, activities = null) {
                                             </span>
                                         ` : ''}
                                         ${activity.sha ? `
-                                            <span class="commit-sha">
+                                            <span class="commit-sha ${getRandomShaBgClass()}">
                                                 <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12">
                                                     <path d="M1.643 3.143 8 9.5l6.357-6.357A.75.75 0 0 0 13.643 2.5L8 8.157 2.357 2.5a.75.75 0 0 0-1.714.643Z"></path>
                                                 </svg>
@@ -1552,15 +1552,25 @@ function renderActivityTimeline(data, activities = null) {
                                         <span class="activity-date">${activity.date}</span>
                                     </div>
                                     ${activity.commitMessages && activity.commitMessages.length > 0 ? `
-                                        <div class="commit-messages">
-                                            ${activity.commitMessages.map(message => `
+                                        <div class="commit-messages ${getRandomCommitBgClass()}" data-activity-id="${activity.id || Math.random().toString(36).substr(2, 9)}">
+                                            ${activity.commitMessages.slice(0, 2).map(message => `
                                                 <div class="commit-message-item">
                                                     <span class="commit-message-text">${message.length > 50 ? message.substring(0, 50) + '...' : message}</span>
                                                 </div>
                                             `).join('')}
-                                            ${activity.count > 3 ? `
-                                                <div class="commit-message-item">
-                                                    <span class="commit-message-text">... and ${activity.count - 3} more commits</span>
+                                            ${activity.commitMessages.length > 2 ? `
+                                                <div class="commit-messages-hidden" style="display: none;">
+                                                    ${activity.commitMessages.slice(2).map(message => `
+                                                        <div class="commit-message-item">
+                                                            <span class="commit-message-text">${message.length > 50 ? message.substring(0, 50) + '...' : message}</span>
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                                <div class="commit-message-toggle" onclick="toggleCommitMessages(this, ${activity.commitMessages.length - 2})">
+                                                    <span class="toggle-text">展开查看剩下的 ${activity.commitMessages.length - 2} 条</span>
+                                                    <svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="12" height="12">
+                                                        <path d="M4.72 7.78a.75.75 0 0 1 1.06 0L8 9.94l2.22-2.22a.75.75 0 1 1 1.06 1.06l-2.75 2.75a.75.75 0 0 1-1.06 0L4.72 8.84a.75.75 0 0 1 0-1.06Z"></path>
+                                                    </svg>
                                                 </div>
                                             ` : ''}
                                         </div>
@@ -1585,12 +1595,17 @@ function renderActivityTimeline(data, activities = null) {
                                         <a href="https://github.com/${GITHUB_USERNAME}/${activity.repo}" target="_blank" class="repo-link">
                                             ${GITHUB_USERNAME}/${activity.repo}
                                         </a>
-                                        <span class="language-tag">
-                                            <span class="language-dot" style="background-color: var(--color-${normalizeLangName(activity.language)}, var(--color-default));"></span>
-                                            ${activity.language}
-                                        </span>
                                         <span class="activity-date">${activity.date}</span>
                                     </div>
+                                    ${activityItemClass === 'hidden-activity-item' ? (() => {
+                                        // 在hidden-activity-item中显示仓库简介
+                                        const repoInfo = projectsData.find(project => project.name === activity.repo);
+                                        return repoInfo && repoInfo.description ? `
+                                            <div class="repo-description-tag">
+                                                ${repoInfo.description}
+                                            </div>
+                                        ` : '';
+                                    })() : ''}
                                 </div>
                             </div>
                         `;
@@ -4235,7 +4250,7 @@ function initActivityChart(container) {
 async function fetchChangelogData() {
     try {
         const CHANGELOG_API_CONFIG = {
-            URL: "",
+            URL: "#",
             Method: "post",
             Headers: {
                 "Accept": "application/json, text/plain, */*",
@@ -4562,4 +4577,88 @@ window.createShowMoreButton = function() {
     setTimeout(addTouchFeedback, 0);
     
     return result;
+}
+
+// 生成随机背景颜色类
+function getRandomCommitBgClass() {
+    const bgClasses = [
+        'commit-bg-green-bean',
+        'commit-bg-almond',
+        'commit-bg-autumn',
+        'commit-bg-rouge',
+        'commit-bg-sky-blue',
+        'commit-bg-purple',
+        'commit-bg-aurora',
+        'commit-bg-grass',
+        'commit-bg-mist-blue',
+        'commit-bg-light-dousha',
+        'commit-bg-beige',
+        'commit-bg-olive',
+        'commit-bg-cyan',
+        'commit-bg-lavender'
+    ];
+    return bgClasses[Math.floor(Math.random() * bgClasses.length)];
+}
+
+// 生成随机branch背景颜色类
+function getRandomBranchBgClass() {
+    const bgClasses = [
+        'branch-bg-green-bean',
+        'branch-bg-almond',
+        'branch-bg-autumn',
+        'branch-bg-rouge',
+        'branch-bg-sky-blue',
+        'branch-bg-purple',
+        'branch-bg-aurora',
+        'branch-bg-grass',
+        'branch-bg-mist-blue',
+        'branch-bg-light-dousha',
+        'branch-bg-beige',
+        'branch-bg-olive',
+        'branch-bg-cyan',
+        'branch-bg-lavender'
+    ];
+    return bgClasses[Math.floor(Math.random() * bgClasses.length)];
+}
+
+// 切换commit消息的展开/收起状态
+function toggleCommitMessages(toggleElement, remainingCount) {
+    const commitMessagesContainer = toggleElement.closest('.commit-messages');
+    const hiddenMessages = commitMessagesContainer.querySelector('.commit-messages-hidden');
+    const toggleText = toggleElement.querySelector('.toggle-text');
+    const toggleIcon = toggleElement.querySelector('.toggle-icon');
+    
+    if (hiddenMessages.style.display === 'none') {
+        // 展开
+        hiddenMessages.style.display = 'block';
+        toggleText.textContent = `收起`;
+        toggleIcon.style.transform = 'rotate(180deg)';
+        toggleElement.classList.add('expanded');
+    } else {
+        // 收起
+        hiddenMessages.style.display = 'none';
+        toggleText.textContent = `展开查看剩下的 ${remainingCount} 条`;
+        toggleIcon.style.transform = 'rotate(0deg)';
+        toggleElement.classList.remove('expanded');
+    }
+}
+
+function getRandomShaBgClass() {
+    const bgClasses = [
+        'sha-bg-green-bean',
+        'sha-bg-almond',
+        'sha-bg-autumn',
+        'sha-bg-rouge',
+        'sha-bg-sky-blue',
+        'sha-bg-purple',
+        'sha-bg-aurora',
+        'sha-bg-grass',
+        'sha-bg-mist-blue',
+        'sha-bg-light-dousha',
+        'sha-bg-beige',
+        'sha-bg-olive',
+        'sha-bg-cyan',
+        'sha-bg-lavender'
+    ];
+    return bgClasses[Math.floor(Math.random() * bgClasses.length)];
 }
