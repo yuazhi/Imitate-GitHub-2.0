@@ -77,7 +77,7 @@ const GITHUB_TOKEN = '#';
 // Memos API配置
 const MEMOS_API_BASE = '#';
 const MEMOS_TOKEN = '#';
-// const MEMOS_RESOURCE_BASE = 'http://120.26.160.134:5230/o/r/'; // Memos 资源的基础URL
+// const MEMOS_RESOURCE_BASE = '#'; // Memos 资源的基础URL
 
 // 文章 API 配置
 const ARTICLES_API_CONFIG = {
@@ -100,7 +100,14 @@ const ARTICLES_API_CONFIG = {
 
 async function fetchArticlesData() {
     try {
-        showSkeletonLoading();
+        showSkeletonLoading('articles');
+        
+        // 确保初始步骤显示足够时间
+        await new Promise(resolve => setTimeout(resolve, MIN_STEP_DURATION));
+        
+        // 更新到下一步：获取文章数据
+        await updateLoadingStep();
+        
         const response = await fetch(ARTICLES_API_CONFIG.URL, {
             method: ARTICLES_API_CONFIG.Method,
             headers: ARTICLES_API_CONFIG.Headers,
@@ -113,9 +120,17 @@ async function fetchArticlesData() {
 
         const data = await response.json();
         console.log("API 返回的原始数据:", data); // 添加日志
-        hideSkeletonLoading();
+        
+        // 更新到下一步：渲染文章列表
+        await updateLoadingStep();
+        
         // 对文章数据进行排序，按 created_at 降序排列
         const sortedRows = data.rows.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        
+        // 更新到最后一步：完成加载
+        await updateLoadingStep();
+        hideSkeletonLoading();
+        
         return sortedRows; // 返回排序后的数据
     } catch (error) {
         console.error("Error fetching articles data:", error);
@@ -278,6 +293,19 @@ function downloadImage(url, filename) {
 // 渲染友情链接页面
 async function renderFriends() {
     const contentArea = document.querySelector('.content-area');
+    
+    // 显示骨架屏
+    showSkeletonLoading('friends');
+    
+    // 确保初始步骤显示足够时间
+    await new Promise(resolve => setTimeout(resolve, MIN_STEP_DURATION));
+    
+    // 更新到下一步：加载友链数据
+    await updateLoadingStep();
+    
+    // 更新到下一步：渲染友链列表
+    await updateLoadingStep();
+    
     contentArea.innerHTML = `
         <div class="friends-container">
             <div class="friends-grid">
@@ -320,6 +348,10 @@ async function renderFriends() {
             </div>
         </div>
     `;
+    
+    // 更新到最后一步：完成加载
+    await updateLoadingStep();
+    hideSkeletonLoading();
 }
 
 // 获取GitHub数据的函数
@@ -1296,6 +1328,9 @@ async function refreshContributionData() {
             refreshButton.disabled = true;
         }
         
+        // 强制刷新概览页面的缓存状态
+        forceRefreshPageCache('overview');
+        
         // 获取当前选择的年份，如果没有保存则使用当前年份
         const savedYear = localStorage.getItem('selected-contribution-year');
         const currentYear = new Date().getFullYear();
@@ -1442,8 +1477,9 @@ function renderActivityTimeline(data, activities = null) {
     let totalActivityItems = 0; // This variable tracks the total count of actual activity items for 'Show more' button logic.
     let visibleActivityItems = 0; // 跟踪可见的活动项数量
 
-    // 设置初始显示的活动数量
-    const initialVisibleCount = 5;
+    // 设置初始显示的活动数量和最大限制
+    const initialVisibleCount = 3;
+    const maxActivityItems = 15; // 最大显示50个活动
 
     // Sort months in descending order (most recent first) for display
     const sortedMonths = Object.keys(effectiveActivities).sort((a, b) => {
@@ -1500,6 +1536,11 @@ function renderActivityTimeline(data, activities = null) {
                 // 跳过 star 类型的活动
                 if (activity.type === 'star') {
                     return null;
+                }
+                
+                // 检查是否超过最大活动数量限制
+                if (totalActivityItems >= maxActivityItems) {
+                    return null; // 超过50个的活动不显示
                 }
                 
                 // Increment totalActivityItems for each actual activity item
@@ -1881,7 +1922,10 @@ function renderActivityTimeline(data, activities = null) {
 
     // The show more button logic should check against the total number of actual activity items
     if (totalActivityItems > initialVisibleCount) {
-        const nextBatch = Math.min(activityIncrement, totalActivityItems - initialVisibleCount);
+        const maxRemainingItems = maxActivityItems - initialVisibleCount;
+        const actualRemainingItems = Math.min(totalActivityItems - initialVisibleCount, maxRemainingItems);
+        const nextBatch = Math.min(activityIncrement, actualRemainingItems);
+        
         timelineHtml += `
             <div class="show-more">
                 <div class="button-group">
@@ -2124,6 +2168,9 @@ async function updateContributionYear(year, forceRefresh = false) {
             return;
         }
 
+        // 强制刷新概览页面的缓存状态
+        forceRefreshPageCache('overview');
+
         // 保存选择的年份到 localStorage
         localStorage.setItem('selected-contribution-year', year);
 
@@ -2202,12 +2249,20 @@ async function renderOverview() {
     const content = document.querySelector('.content-area');
     
     // 显示骨架屏
-    showSkeletonLoading();
-    await new Promise(resolve => setTimeout(resolve, 100));
-
+    showSkeletonLoading('overview');
+    
     try {
+        // 确保初始步骤显示足够时间
+        await new Promise(resolve => setTimeout(resolve, MIN_STEP_DURATION));
+        
+        // 更新到下一步：获取GitHub数据
+        await updateLoadingStep();
+        
         // 获取最新的 GitHub 数据
         const repoDetails = await fetchGitHubData();
+        
+        // 更新到下一步：渲染概览内容
+        await updateLoadingStep();
         
         // 获取贡献图数据
         const contributionGraph = await renderContributionGraph();
@@ -2294,6 +2349,8 @@ async function renderOverview() {
             </div>
         `;
     } finally {
+        // 更新到最后一步：完成加载
+        updateLoadingStep();
         await hideSkeletonLoading();
         initLightbox(); // 重新初始化灯箱
     }
@@ -2305,8 +2362,13 @@ async function renderProjects() {
     
     try {
         // 显示骨架屏
-        showSkeletonLoading();
-        await new Promise(resolve => setTimeout(resolve, 100));
+        showSkeletonLoading('projects');
+        
+        // 确保初始步骤显示足够时间
+        await new Promise(resolve => setTimeout(resolve, MIN_STEP_DURATION));
+        
+        // 更新到下一步：加载项目数据
+        await updateLoadingStep();
         
         // 获取最新的 GitHub 数据
         const repoDetails = await fetchGitHubData();
@@ -2324,6 +2386,9 @@ async function renderProjects() {
             return;
         }
         
+        // 更新到下一步：渲染项目列表
+        await updateLoadingStep();
+        
         // 渲染所有项目
         content.innerHTML = repoDetails.map(repo => renderProjectCard(repo)).join('');
     } catch (error) {
@@ -2338,6 +2403,8 @@ async function renderProjects() {
             </div>
         `;
     } finally {
+        // 更新到最后一步：完成加载
+        await updateLoadingStep();
         await hideSkeletonLoading();
         initLightbox(); // 重新初始化灯箱
     }
@@ -2458,10 +2525,15 @@ async function renderStars() {
     const content = document.querySelector('.content-area');
     
     // 显示加载中
-    showSkeletonLoading();
-    await new Promise(resolve => setTimeout(resolve, 100));
-
+    showSkeletonLoading('stars');
+    
     try {
+        // 确保初始步骤显示足够时间
+        await new Promise(resolve => setTimeout(resolve, MIN_STEP_DURATION));
+        
+        // 更新到下一步：获取Star数据
+        await updateLoadingStep();
+        
         const starredRepos = await fetchStarredRepos();
         
         if (starredRepos.length === 0) {
@@ -2477,6 +2549,9 @@ async function renderStars() {
             return;
         }
 
+        // 更新到下一步：渲染Star列表
+        await updateLoadingStep();
+        
         // 只取最新的10个项目
         const latestRepos = starredRepos.slice(0, 10);
 
@@ -2555,6 +2630,9 @@ async function renderStars() {
             </div>
         `;
     } finally {
+        // 更新到最后一步：完成加载
+        await updateLoadingStep();
+        
         // 隐藏加载中
         await hideSkeletonLoading();
         initLightbox(); // 重新初始化灯箱
@@ -2868,6 +2946,7 @@ function closeProjectModal() {
 let currentVisibleActivityCount = 5; // 初始显示5个
 const activityIncrement = 6; // 每次展开显示6个
 let lastExpandedCount = 5; // 记录上次展开的位置
+const maxActivityItems = 50; // 最大显示50个活动
 
 // 添加切换活动显示的函数
 function toggleActivity(event) {
@@ -2883,11 +2962,15 @@ function toggleActivity(event) {
     if (hiddenItems.length > 0) {
         // 检查是否还有更多项目可以显示
         const totalHiddenItems = hiddenItems.length;
-        const remainingItems = totalHiddenItems - (currentVisibleActivityCount - 5); // 5是初始显示数量
+        const remainingItems = totalHiddenItems - (currentVisibleActivityCount - 5);
         
-        if (remainingItems > 0) {
+        // 检查是否超过最大活动数量限制
+        const maxRemainingItems = maxActivityItems - currentVisibleActivityCount;
+        const actualRemainingItems = Math.min(remainingItems, maxRemainingItems);
+        
+        if (actualRemainingItems > 0) {
             // 还有更多项目可以显示，展开下一批
-            const itemsToShow = Math.min(activityIncrement, remainingItems);
+            const itemsToShow = Math.min(activityIncrement, actualRemainingItems);
             const startIndex = currentVisibleActivityCount - 5; // 从当前显示数量开始
             
             // 使用requestAnimationFrame进行更流畅的DOM操作
@@ -2937,22 +3020,23 @@ function toggleActivity(event) {
             
             // 更新按钮文本 - 在requestAnimationFrame中进行，减少重排
             requestAnimationFrame(() => {
-                if (currentVisibleActivityCount - 5 >= totalHiddenItems) {
-                    // 所有项目都已显示，显示"回到顶端"按钮，隐藏收起按钮
-            button.innerHTML = `
+                if (currentVisibleActivityCount >= maxActivityItems || currentVisibleActivityCount - 5 >= totalHiddenItems) {
+                    // 达到最大限制或所有项目都已显示，显示"回到顶端"按钮，隐藏收起按钮
+                    button.innerHTML = `
                         Back to top
-                <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
-                    <path d="M3.22 10.53a.749.749 0 0 1 0-1.06l4.25-4.25a.749.749 0 0 1 1.06 0l4.25 4.25a.749.749 0 1 1-1.06 1.06L8 6.811 4.28 10.53a.749.749 0 0 1-1.06 0Z"></path>
-                </svg>
-            `;
+                        <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                            <path d="M3.22 10.53a.749.749 0 0 1 0-1.06l4.25-4.25a.749.749 0 0 1 1.06 0l4.25 4.25a.749.749 0 1 1-1.06 1.06L8 6.811 4.28 10.53a.749.749 0 0 1-1.06 0Z"></path>
+                        </svg>
+                    `;
                     // 隐藏收起按钮
                     const collapseButton = document.querySelector('.collapse-button');
                     if (collapseButton) {
                         collapseButton.style.display = 'none';
                     }
-        } else {
+                } else {
                     // 还有更多项目可以显示
-                    const nextBatch = Math.min(activityIncrement, remainingItems - itemsToShow);
+                    const nextRemainingItems = Math.min(remainingItems - itemsToShow, maxActivityItems - currentVisibleActivityCount);
+                    const nextBatch = Math.min(activityIncrement, nextRemainingItems);
                     button.innerHTML = `
                         Show ${nextBatch} more activities
                         <svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
@@ -2992,7 +3076,7 @@ function toggleActivity(event) {
                 if (activityTimeline) {
                     // 找到timeline的底部位置
                     const rect = activityTimeline.getBoundingClientRect();
-                    const targetY = window.pageYOffset + rect.top + rect.height - window.innerHeight +20 // -100px的偏移，让位置再往上一点
+                    const targetY = window.pageYOffset + rect.top + rect.height - window.innerHeight +120 // -100px的偏移，让位置再往上一点
                     
                     // 使用CSS控制的平滑滚动
                     document.documentElement.style.scrollBehavior = 'smooth';
@@ -3120,7 +3204,7 @@ function collapseActivity(event) {
             if (showMoreSection) {
                 const rect = showMoreSection.getBoundingClientRect();
                 // 根据是否从底部收起来决定不同的偏移量，增加偏移距离
-                const offsetDistance = isAtBottom ? 1000 : 1400; // 增加偏移量，收回更大距离
+                const offsetDistance = isAtBottom ? 1000 : 1500; // 增加偏移量，让收起位置更往上
                 targetY = window.pageYOffset + rect.top - offsetDistance;
             }
             
@@ -3157,8 +3241,11 @@ function collapseActivity(event) {
             // 更新展开按钮文本（只在非底部时）
             if (!isAtBottom) {
                 const remainingItems = totalHiddenItems - (currentVisibleActivityCount - 5);
-                if (remainingItems > 0) {
-                    const nextBatch = Math.min(activityIncrement, remainingItems);
+                const maxRemainingItems = maxActivityItems - currentVisibleActivityCount;
+                const actualRemainingItems = Math.min(remainingItems, maxRemainingItems);
+                
+                if (actualRemainingItems > 0) {
+                    const nextBatch = Math.min(activityIncrement, actualRemainingItems);
                     const expandButton = document.querySelector('.show-more-button');
                     if (expandButton) {
                         expandButton.innerHTML = `
@@ -3218,15 +3305,220 @@ function collapseActivity(event) {
     }
 }
 
-function showSkeletonLoading() {
+// 流式加载状态管理
+let streamingLoadingInterval = null;
+let currentLoadingStep = 0;
+let currentPageType = 'overview';
+
+// 页面缓存状态管理
+let pageCacheStatus = {
+    'overview': false,
+    'projects': false,
+    'stars': false,
+    'memos': false,
+    'articles': false,
+    'changelog': false,
+    'friends': false
+};
+
+// 不同页面的加载步骤
+const loadingStepsMap = {
+    'overview': [
+        '初始化页面',
+        '获取GitHub数据',
+        '渲染概览内容',
+    ],
+    'projects': [
+        '初始化页面',
+        '加载项目数据',
+        '渲染项目列表',
+    ],
+    'stars': [
+        '初始化页面',
+        '获取Star数据',
+        '渲染Star列表',
+    ],
+    'memos': [
+        '初始化页面',
+        '获取说说数据',
+        '渲染说说列表',
+    ],
+    'articles': [
+        '初始化页面',
+        '获取文章数据',
+        '渲染文章列表',
+    ],
+    'changelog': [
+        '初始化页面',
+        '获取更新日志',
+        '渲染日志列表',
+    ],
+    'friends': [
+        '初始化页面',
+        '加载友链数据',
+        '渲染友链列表',
+    ]
+};
+
+// 缓存加载步骤
+const cacheLoadingSteps = [
+    '调用缓存中',
+    '正在从缓存加载',
+    '渲染缓存内容',
+];
+
+function showSkeletonLoading(pageType = 'overview') {
     const content = document.querySelector('.content-area');
-    content.innerHTML = `
-        <div class="loading-text">加载中...</div>
-    `;
+    currentLoadingStep = 0;
+    currentPageType = pageType;
+    
+    // 记录初始步骤的开始时间
+    stepStartTime = Date.now();
+    
+    // 检查页面是否已经加载过（缓存状态）
+    const isCached = pageCacheStatus[pageType];
+    
+    // 根据缓存状态选择加载步骤
+    const loadingSteps = isCached ? cacheLoadingSteps : (loadingStepsMap[pageType] || loadingStepsMap['overview']);
+    
+    // 检查是否已经存在loading-text元素，如果存在则只更新文本，避免重新创建
+    let loadingText = content.querySelector('.loading-text');
+    if (loadingText) {
+        // 如果已存在，只更新文本内容
+        loadingText.textContent = `加载中...${loadingSteps[currentLoadingStep]}`;
+    } else {
+        // 如果不存在，才创建新元素
+        content.innerHTML = `
+            <div class="loading-text">加载中...${loadingSteps[currentLoadingStep]}</div>
+        `;
+        loadingText = content.querySelector('.loading-text');
+    }
+    
+    // 强制浏览器重绘，确保文本显示
+    if (loadingText) {
+        loadingText.offsetHeight;
+    }
+    
+    // 清除之前的定时器
+    if (streamingLoadingInterval) {
+        clearInterval(streamingLoadingInterval);
+        streamingLoadingInterval = null;
+    }
+}
+
+// 记录每个步骤的开始时间
+let stepStartTime = 0;
+const MIN_STEP_DURATION = 300; // 每个步骤最少显示300毫秒，确保用户能看清
+const MAX_STEP_DURATION = 400; // 每个步骤最多显示500毫秒
+const ABSOLUTE_MAX_DURATION = 500; // 绝对最大停留时间，超过此时间按真实时间停留
+
+// 更新加载状态到下一步
+async function updateLoadingStep() {
+    // 计算当前步骤已经显示的时间
+    const currentTime = Date.now();
+    const elapsedTime = currentTime - stepStartTime;
+    
+    // 检查页面是否已经加载过（缓存状态）
+    const isCached = pageCacheStatus[currentPageType];
+    
+    // 根据缓存状态选择不同的时间设置
+    let minStepDuration, maxStepDuration, absoluteMaxDuration;
+    
+    if (isCached) {
+        // 缓存加载时使用较短但仍然有随机性的时间
+        minStepDuration = 200; // 200ms
+        maxStepDuration = 400; // 400ms
+        absoluteMaxDuration = 600; // 600ms
+    } else {
+        // 正常加载时使用原来的时间
+        minStepDuration = MIN_STEP_DURATION; // 300ms
+        maxStepDuration = MAX_STEP_DURATION; // 500ms
+        absoluteMaxDuration = ABSOLUTE_MAX_DURATION; // 800ms
+    }
+    
+    // 为每个步骤生成随机显示时间（在最小和最大值之间）
+    const randomDuration = Math.floor(Math.random() * (maxStepDuration - minStepDuration + 1)) + minStepDuration;
+    
+    // 确定实际停留时间：如果真实时间超过绝对最大值，按真实时间；否则按随机时间
+    const actualDuration = Math.max(randomDuration, Math.min(elapsedTime, absoluteMaxDuration));
+    
+    // 如果显示时间不足实际停留时间，则等待
+    if (elapsedTime < actualDuration) {
+        await new Promise(resolve => setTimeout(resolve, actualDuration - elapsedTime));
+    }
+    
+    // 更新步骤计数
+    currentLoadingStep++;
+    // 记录新步骤的开始时间
+    stepStartTime = Date.now();
+    
+    // 根据缓存状态选择加载步骤
+    const loadingSteps = isCached ? cacheLoadingSteps : (loadingStepsMap[currentPageType] || loadingStepsMap['overview']);
+    
+    if (currentLoadingStep < loadingSteps.length) {
+        const loadingText = document.querySelector('.loading-text');
+        if (loadingText) {
+            loadingText.textContent = `加载中...${loadingSteps[currentLoadingStep]}`;
+            // 强制浏览器重绘，确保文本更新
+            loadingText.offsetHeight;
+        }
+        
+        // 为下一个步骤生成随机延迟时间
+        let nextStepRandomDelay;
+        
+        if (isCached) {
+    // 缓存加载时使用更短的延迟
+    if (currentLoadingStep === 1) { // 第二个步骤
+        nextStepRandomDelay = Math.floor(Math.random() * (300 - 150 + 1)) + 150; // 150-300ms
+    } else if (currentLoadingStep === 0) { // 第一个步骤
+        nextStepRandomDelay = Math.floor(Math.random() * (250 - 100 + 1)) + 100; // 100-250ms
+    } else { // 第三个及后续步骤
+        nextStepRandomDelay = Math.floor(Math.random() * (250 - 100 + 1)) + 100; // 100-250ms
+    }
+} else {
+    // 正常加载时使用缩短的延迟
+    if (currentLoadingStep === 1) { // 第二个步骤停留更久
+        nextStepRandomDelay = Math.floor(Math.random() * (400 - 300 + 1)) + 300; // 300-400ms
+    } else if (currentLoadingStep === 0) { // 第一个步骤随机
+        nextStepRandomDelay = Math.floor(Math.random() * (350 - 200 + 1)) + 200; // 200-350ms
+    } else { // 第三个及后续步骤随机
+        nextStepRandomDelay = Math.floor(Math.random() * (350 - 200 + 1)) + 200; // 200-350ms
+    }
+}
+        
+        // 确保不超过绝对最大值
+        nextStepRandomDelay = Math.min(nextStepRandomDelay, absoluteMaxDuration);
+        await new Promise(resolve => setTimeout(resolve, nextStepRandomDelay));
+        
+        return true; // 还有更多步骤
+    }
+    return false; // 没有更多步骤
 }
 
 function hideSkeletonLoading() {
+    // 清除流式加载定时器
+    if (streamingLoadingInterval) {
+        clearInterval(streamingLoadingInterval);
+        streamingLoadingInterval = null;
+    }
+    
+    // 标记当前页面为已加载（缓存状态）
+    pageCacheStatus[currentPageType] = true;
+    
     // 不需要额外操作，因为内容会被新的内容替换
+}
+
+// 强制刷新页面缓存状态（用于页面更新等情况）
+function forceRefreshPageCache(pageType) {
+    pageCacheStatus[pageType] = false;
+}
+
+// 强制刷新所有页面的缓存状态
+function forceRefreshAllPageCache() {
+    Object.keys(pageCacheStatus).forEach(pageType => {
+        pageCacheStatus[pageType] = false;
+    });
+    console.log('已重置所有页面的缓存状态');
 }
 
 // Modify the tab click event handler
@@ -3253,7 +3545,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     // 显示骨架屏
-    showSkeletonLoading();
+    showSkeletonLoading(activeTab);
 
     // 根据初始标签渲染内容
     try {
@@ -3315,7 +3607,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             window.location.hash = targetTab;
 
             // 显示骨架屏
-            showSkeletonLoading();
+            showSkeletonLoading(targetTab);
 
             try {
                 switch(targetTab) {
@@ -3424,6 +3716,8 @@ function startContributionUpdateChecker() {
             const needsUpdate = await checkContributionUpdates();
             if (needsUpdate) {
                 console.log('检测到新活动，自动更新贡献数据');
+                // 强制刷新概览页面的缓存状态
+                forceRefreshPageCache('overview');
                 await refreshContributionData();
             }
         }
@@ -3436,6 +3730,8 @@ function startContributionUpdateChecker() {
             const needsUpdate = await checkContributionUpdates();
             if (needsUpdate) {
                 console.log('页面重新可见，检测到新活动，自动更新贡献数据');
+                // 强制刷新概览页面的缓存状态
+                forceRefreshPageCache('overview');
                 await refreshContributionData();
             }
         }
@@ -3571,7 +3867,19 @@ function createMemoHTML(memo) {
 
 async function renderMemos() {
     try {
+        showSkeletonLoading('memos');
+        
+        // 确保初始步骤显示足够时间
+        await new Promise(resolve => setTimeout(resolve, MIN_STEP_DURATION));
+        
+        // 更新到下一步：获取说说数据
+        await updateLoadingStep();
+        
         const memos = await fetchMemosData();
+        
+        // 更新到下一步：渲染说说列表
+        await updateLoadingStep();
+        
         const contentArea = document.querySelector('.content-area');
         
         if (!memos || memos.length === 0) {
@@ -3634,6 +3942,9 @@ async function renderMemos() {
             </div>
         `;
     } finally {
+        // 更新到最后一步：完成加载
+        await updateLoadingStep();
+        hideSkeletonLoading();
         initLightbox(); // 重新初始化灯箱
     }
 }
@@ -3720,7 +4031,7 @@ function formatDate(dateString) {
 async function renderArticles() {
     const contentArea = document.querySelector('.content-area');
     contentArea.innerHTML = ''; // 清除旧内容
-    showSkeletonLoading();
+    showSkeletonLoading('articles');
 
     try {
         const articles = await fetchArticlesData();
@@ -4298,7 +4609,18 @@ let changelogDisplayCount = 5;
 // 渲染更新日志的函数
 async function renderChangelog() {
     try {
+        showSkeletonLoading('changelog');
+        
+        // 确保初始步骤显示足够时间
+        await new Promise(resolve => setTimeout(resolve, MIN_STEP_DURATION));
+        
+        // 更新到下一步：获取更新日志
+        await updateLoadingStep();
+        
         const changelogs = await fetchChangelogData();
+        
+        // 更新到下一步：渲染日志列表
+        await updateLoadingStep();
         const contentArea = document.querySelector('.content-area');
         
         if (!changelogs || changelogs.length === 0) {
@@ -4343,6 +4665,10 @@ async function renderChangelog() {
                 <p>请稍后再试</p>
             </div>
         `;
+    } finally {
+        // 更新到最后一步：完成加载
+        await updateLoadingStep();
+        hideSkeletonLoading();
     }
 }
 
