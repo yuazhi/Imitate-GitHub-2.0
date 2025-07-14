@@ -3646,12 +3646,12 @@ margin-left: auto; /* 保持靠右 */
 /* 移动端样式 - 屏幕宽度小于等于768px时应用 */
 @media (max-width: 768px) {
     .ongoing-project-title {
-        margin-top: -3.5px;  /* 移动端上间距 */
-        margin-bottom: 24.2px;  /* 移动端下间距 */
+        margin-top: -3px;  /* 移动端上间距 */
+        margin-bottom: 22px;  /* 移动端下间距 */
          font-size: 20px;  /* 移动端字体适当减小 */
         
     }
-}    
+}     
    
 
 .ongoing-project-title svg {
@@ -8056,5 +8056,22 @@ margin-left: auto; /* 保持靠右 */
     background-color: #231a2a !important;
     border-color: #b39ddb !important;
     color: #b39ddb !important;
+}
+
+/* 修复暗色模式下的图标颜色 */
+[data-theme="dark"] .social-links svg path {
+    fill: var(--icon-color);
+}
+
+/* 暗色模式下手机端 social-links 的上下两条线颜色更淡 */
+@media (max-width: 768px) {
+    [data-theme="dark"] .social-links {
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+    }
+}
+
+[data-theme="dark"] .stats svg path {
+    fill: var(--icon-color);
 }
 
