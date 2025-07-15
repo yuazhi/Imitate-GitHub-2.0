@@ -3986,23 +3986,24 @@ function loadMoreMemos() {
 
 // 添加灯箱功能
 function initLightbox() {
-    // 为每个说说单独初始化 ViewImage
-    const memos = document.querySelectorAll('.memo-resources');
-    memos.forEach(memo => {
-        const images = memo.querySelectorAll('img');
-        if (images.length > 0) {
-            const imageUrls = Array.from(images).map(img => img.src);
-            images.forEach(img => {
-                img.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    ViewImage.display(imageUrls, this.src);
-                });
-            });
-        }
+    // 检查是否有需要灯箱功能的图片
+    const memoImages = document.querySelectorAll('.memo-resources img');
+    const readmeImages = document.querySelectorAll('.readme-content img');
+    
+    // 如果没有图片需要灯箱功能，直接返回
+    if (memoImages.length === 0 && readmeImages.length === 0) {
+        return;
+    }
+
+    // 移除所有已存在的灯箱事件监听器
+    const allImages = document.querySelectorAll('.memo-resources img, .readme-content img');
+    allImages.forEach(img => {
+        // 移除所有 click 事件监听器
+        const newImg = img.cloneNode(true);
+        img.parentNode.replaceChild(newImg, img);
     });
 
     // 为 readme 内容单独初始化
-    const readmeImages = document.querySelectorAll('.readme-content img');
     if (readmeImages.length > 0) {
         const readmeImageUrls = Array.from(readmeImages).map(img => img.src);
         readmeImages.forEach(img => {
