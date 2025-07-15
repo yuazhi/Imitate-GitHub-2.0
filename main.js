@@ -1050,11 +1050,14 @@ async function fetchContributionData(year = new Date().getFullYear(), forceRefre
                         branch: 'main', // 默认分支
                         sha: commit.sha.substring(0, 7)
                     });
-                } else {
+               } else {
                     // 更新现有的 commit 活动
                     existingActivity.count += 1;
                     existingActivity.commits.push(commit);
-                    existingActivity.commitMessages.push(commit.commit.message);
+                    // 检查commit message是否已经存在，避免重复添加
+                    if (!existingActivity.commitMessages.includes(commit.commit.message)) {
+                        existingActivity.commitMessages.push(commit.commit.message);
+                    }
                     existingActivity.description = `Created ${existingActivity.count} commit${existingActivity.count > 1 ? 's' : ''} in ${commit.repo}`;
                     // 更新时间为最新的 commit 时间
                     if (new Date(commit.created_at) > new Date(existingActivity.created_at || 0)) {
@@ -1594,7 +1597,7 @@ function renderActivityTimeline(data, activities = null) {
                                     </div>
                                     ${activity.commitMessages && activity.commitMessages.length > 0 ? `
                                         <div class="commit-messages ${getRandomCommitBgClass()}" data-activity-id="${activity.id || Math.random().toString(36).substr(2, 9)}">
-                                            ${activity.commitMessages.slice(0, 2).map(message => `
+                                           ${activity.commitMessages.slice(0, Math.min(2, activity.commitMessages.length)).map(message => `
                                                 <div class="commit-message-item">
                                                     <span class="commit-message-text">${message.length > 50 ? message.substring(0, 50) + '...' : message}</span>
                                                 </div>
