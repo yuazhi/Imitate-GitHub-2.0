@@ -2591,7 +2591,7 @@ margin-left: auto; /* 保持靠右 */
     width: auto !important; /* 强制宽度自适应，保持比例 */
     height: auto !important; /* 确保高度自适应，防止变形 */
     object-fit: contain !important; /* 确保图片等比例缩放，并完全显示 */
-    margin: 8px 0;
+    margin: 16px 0; /* 减小图片上下间距为5px */
     border-radius: 6px;
     vertical-align: middle; /* 防止底部额外空间 */
 }
@@ -5120,8 +5120,9 @@ margin-left: auto; /* 保持靠右 */
 
 .article-modal-body {
     flex-grow: 1;
-    padding: 0 16px 16px 16px; /* 调整顶部 padding 为 0 */
+    padding: 5px 16px 5px 16px; /* 调整顶部 padding 为 0，底部间隙减小到 8px */
     overflow-y: auto; /* 确保内容可滚动 */
+    -webkit-overflow-scrolling: touch;
     color: var(--text-color);
 }
 
@@ -5217,9 +5218,11 @@ margin-left: auto; /* 保持靠右 */
 
 /* 针对文章模态框内的图片，强制等比例显示 */
 .article-modal-body .markdown-body img {
+    max-width: 100% !important;
     width: auto !important; /* 强制宽度自适应，保持比例 */
     height: auto !important; /* 确保高度自适应，防止变形 */
     object-fit: contain !important;
+    margin-bottom: 5px !important; /* 图片结尾高度为5px */
 }
 
 .article-modal-actions {
