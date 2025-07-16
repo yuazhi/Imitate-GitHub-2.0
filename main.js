@@ -75,9 +75,9 @@ const GITHUB_API_BASE = '#';
 const GITHUB_TOKEN = '#';
 
 // Memos API配置
-const MEMOS_API_BASE = '#';
+const MEMOS_API_BASE = 'https://api.yuazhi.cn/api/v1';
 const MEMOS_TOKEN = '#';
-// const MEMOS_RESOURCE_BASE = '#'; // Memos 资源的基础URL
+// const MEMOS_RESOURCE_BASE = '#'; // Memos 资源的基础URL（废除）
 
 // 文章 API 配置
 const ARTICLES_API_CONFIG = {
@@ -524,7 +524,7 @@ function renderProjectCard(project) {
     return `
     <div class="repo-card" onclick="showProjectDetail('${project.name}')">
         <div class="repo-header-row">
-            <a class="repo-title" href="${project.html_url || '#'}" target="_blank">${project.name}</a>
+            <div class="repo-title">${project.name}</div>
             <span class="repo-created">Created ${created}</span>
         </div>
         <div class="repo-description${isLatestProject ? ' latest-project-description' : ''}" ${isLatestProject ? 'style="margin-bottom:10px;"' : ''}>${project.description || 'No description available'}
@@ -1050,7 +1050,7 @@ async function fetchContributionData(year = new Date().getFullYear(), forceRefre
                         branch: 'main', // 默认分支
                         sha: commit.sha.substring(0, 7)
                     });
-               } else {
+                } else {
                     // 更新现有的 commit 活动
                     existingActivity.count += 1;
                     existingActivity.commits.push(commit);
@@ -1597,7 +1597,7 @@ function renderActivityTimeline(data, activities = null) {
                                     </div>
                                     ${activity.commitMessages && activity.commitMessages.length > 0 ? `
                                         <div class="commit-messages ${getRandomCommitBgClass()}" data-activity-id="${activity.id || Math.random().toString(36).substr(2, 9)}">
-                                           ${activity.commitMessages.slice(0, Math.min(2, activity.commitMessages.length)).map(message => `
+                                            ${activity.commitMessages.slice(0, Math.min(2, activity.commitMessages.length)).map(message => `
                                                 <div class="commit-message-item">
                                                     <span class="commit-message-text">${message.length > 50 ? message.substring(0, 50) + '...' : message}</span>
                                                 </div>
@@ -2607,7 +2607,7 @@ async function renderStars() {
             return `
             <div class="repo-card" onclick="showProjectDetail('${repo.full_name}')">
                 <div class="repo-header-row">
-                    <a class="repo-title" href="${repo.html_url}" target="_blank">${repo.full_name}</a>
+                    <div class="repo-title">${repo.full_name}</div>
                     <span class="repo-created">Created ${created}</span>
                 </div>
                 <div class="repo-description">${repo.description || 'No description available'}</div>
@@ -2755,6 +2755,9 @@ async function showProjectDetail(projectName) {
     document.body.appendChild(overlay);
     document.body.appendChild(modal);
 
+    // 禁止body滚动
+    document.body.style.overflow = 'hidden';
+    
     // 显示模态框
     setTimeout(() => {
         modal.classList.add('show');
@@ -2938,6 +2941,8 @@ function closeProjectModal() {
     
     if (modal) {
         modal.classList.remove('show');
+        // 恢复body滚动
+        document.body.style.overflow = '';
         setTimeout(() => {
             document.body.removeChild(modal);
             document.body.removeChild(overlay);
@@ -4003,6 +4008,21 @@ function initLightbox() {
         img.parentNode.replaceChild(newImg, img);
     });
 
+    // 为每个说说单独初始化 ViewImage
+    const memos = document.querySelectorAll('.memo-resources');
+    memos.forEach(memo => {
+        const images = memo.querySelectorAll('img');
+        if (images.length > 0) {
+            const imageUrls = Array.from(images).map(img => img.src);
+            images.forEach(img => {
+                img.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    ViewImage.display(imageUrls, this.src);
+                });
+            });
+        }
+    });
+
     // 为 readme 内容单独初始化
     if (readmeImages.length > 0) {
         const readmeImageUrls = Array.from(readmeImages).map(img => img.src);
@@ -4236,21 +4256,22 @@ async function showArticleDetail(article) {
             });
         });
 
-        articleModal.querySelector('.article-modal-close').addEventListener('click', () => {
+        // 关闭模态框的函数
+        const closeModal = () => {
             articleModal.classList.remove('show');
+            // 恢复body滚动
+            document.body.style.overflow = '';
             // 清除 URL 中的 article 参数
             const url = new URL(window.location.href);
             url.searchParams.delete('article');
             window.history.replaceState({}, '', url);
-        });
+        };
+
+        articleModal.querySelector('.article-modal-close').addEventListener('click', closeModal);
 
         articleModal.addEventListener('click', (e) => {
             if (e.target === articleModal) {
-                articleModal.classList.remove('show');
-                // 清除 URL 中的 article 参数
-                const url = new URL(window.location.href);
-                url.searchParams.delete('article');
-                window.history.replaceState({}, '', url);
+                closeModal();
             }
         });
     }
@@ -4265,6 +4286,9 @@ async function showArticleDetail(article) {
         console.error("文章内容为空或无法找到 'text' 或 'content' 字段:", article);
         articleModal.querySelector('.article-modal-body').innerHTML = '<p>无法加载文章内容。</p>';
     }
+
+    // 禁止body滚动
+    document.body.style.overflow = 'hidden';
 
     // 确保模态框在 DOM 中并且内容已加载，然后添加 'show' 类以触发动画
     void articleModal.offsetWidth;
@@ -4992,3 +5016,4 @@ function getRandomShaBgClass() {
     ];
     return bgClasses[Math.floor(Math.random() * bgClasses.length)];
 }
+
