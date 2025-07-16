@@ -3646,12 +3646,11 @@ margin-left: auto; /* 保持靠右 */
 /* 移动端样式 - 屏幕宽度小于等于768px时应用 */
 @media (max-width: 768px) {
     .ongoing-project-title {
-        margin-top: -3px;  /* 移动端上间距 */
-        margin-bottom: 22px;  /* 移动端下间距 */
-         font-size: 20px;  /* 移动端字体适当减小 */
-        
+        margin-top: -0.45rem;   /* 响应式上间距 */
+        margin-bottom: 1.09rem;  /* 响应式下间距 */
+        font-size: 1.25rem;     /* 响应式字体大小 */
     }
-}     
+}   
    
 
 .ongoing-project-title svg {
