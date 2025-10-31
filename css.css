@@ -228,37 +228,54 @@ body {
 }
 
 .repo-card {
-    background-color: var(--card-bg);
+    background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 16px;
-    margin-bottom: 16px;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
     position: relative;
-    transition: border-color 0.2s ease;
+    overflow: hidden;
 }
 
-.repo-card:hover {
-    /* 移除悬停边框高亮 */
+/* 电脑端圆角小一点 */
+@media (min-width: 769px) {
+    .repo-card {
+        border-radius: 8px;
+    }
+}
+
+[data-theme="dark"] .repo-card {
+    background: var(--card-bg);
     border-color: var(--border-color);
 }
 
 .repo-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 14px;
     color: var(--link-color);
-}
-
-.repo-title:hover {
-    color: var(--hover-color);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    display: block;
     text-decoration: none;
 }
 
 .repo-description {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--text-secondary);
-    margin-bottom: 16px;
-    line-height: 1.5;
+    margin-bottom: 20px;
+    line-height: 1.7;
+    font-weight: 400;
+    opacity: 0.85;
+    letter-spacing: 0.02em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    max-width: 100%;
+    display: block;
 }
 
 .repo-meta {
@@ -287,16 +304,28 @@ body {
 .repo-stats {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-top: 16px;
-    font-size: 12px;
+    gap: 20px;
+    margin-top: 18px;
+    font-size: 13px;
     color: var(--text-secondary);
+    padding: 12px 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .repo-stats {
+    border-top-color: rgba(255, 255, 255, 0.05);
+    border-bottom-color: rgba(255, 255, 255, 0.05);
 }
 
 .repo-stat {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    padding: 6px 10px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    font-weight: 500;
 }
 
 .repo-stat svg {
@@ -304,6 +333,12 @@ body {
     height: 16px;
     fill: currentColor;
 }
+
+[data-theme="dark"] .repo-stat {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+
 
 .repo-tag {
     display: inline-flex;
@@ -514,11 +549,18 @@ body {
     }
 
     .repo-title {
-        font-size: 1rem;
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
     }
 
     .repo-description {
         font-size: 0.9rem;
+        margin-bottom: 16px;
+        line-height: 1.6;
+        letter-spacing: 0.01em;
+        text-align: left;
     }
 
     .repo-stats-row {
@@ -545,11 +587,18 @@ body {
     }
 
     .repo-title {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
     }
 
     .repo-description {
         font-size: 0.85rem;
+        margin-bottom: 14px;
+        line-height: 1.5;
+        letter-spacing: 0.01em;
+        text-align: left;
     }
 
     .repo-stats-row {
@@ -645,7 +694,11 @@ body {
         width: 100%;
         box-sizing: border-box;
         margin: 1rem 0;
+        padding: 16px;
+        border-radius: 10px;
     }
+    
+
 
     .contribution-graph {
         margin: 1rem 0;
@@ -680,6 +733,15 @@ body {
         -webkit-overflow-scrolling: touch;
         padding: 0;
     }
+
+    /* 移动端图标和虚线居中 */
+    .activity-icon {
+        left: -1.75rem;
+    }
+
+    .activity-content:before {
+        left: -1.3125rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -702,7 +764,11 @@ body {
         width: 100%;
         box-sizing: border-box;
         margin: 0.875rem 0;
+        padding: 14px;
+        border-radius: 8px;
     }
+    
+
 
     .contribution-graph {
         width: 100%;
@@ -779,6 +845,15 @@ body {
         -webkit-overflow-scrolling: touch;
         padding: 0;
     }
+
+    /* 小屏幕手机端图标和虚线居中 */
+    .activity-icon {
+        left: -1.75rem;
+    }
+
+    .activity-content:before {
+        left: -1.3125rem;
+    }
 }
 
 @media (max-width: 360px) {
@@ -807,16 +882,26 @@ body {
     }
 
     .repo-card {
-        padding: 0.75rem;
+        padding: 12px;
         margin: 0.75rem 0;
+        border-radius: 8px;
     }
+    
+
 
     .repo-title {
-        font-size: 13px;
+        font-size: 15px;
+        margin-bottom: 8px;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
     }
 
     .repo-description {
         font-size: 11px;
+        margin-bottom: 12px;
+        line-height: 1.4;
+        letter-spacing: 0.01em;
+        text-align: left;
     }
 
     .repo-stats {
@@ -874,11 +959,11 @@ body {
 
 .pinned-project {
     background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 16px;
     margin-bottom: 16px;
     position: relative;
-    border: 1px solid var(--border-color); /* 亮色模式下的边框 */
     box-shadow: none; /* 移除阴影 */
 }
 @media (max-width: 768px) {
@@ -970,9 +1055,8 @@ body {
 
 /* Dark mode styles */
 [data-theme="dark"] .pinned-project {
-    background: var(--card-bg);
-    border: none; /* 暗色模式下移除边框 */
-    box-shadow: none;
+    background-color: #0d1117;
+    border-color: #30363d;
 }
 
 [data-theme="dark"] .pinned-project .repo-title {
@@ -1056,7 +1140,7 @@ body {
     }
 
     .pinned-project .repo-title {
-        font-size: 14px;
+        font-size: 13px;
         color: #0969da;
     }
 
@@ -1603,7 +1687,7 @@ margin-left: auto; /* 保持靠右 */
 
 .activity-icon {
     position: absolute;
-    left: -1.5rem;
+    left: -1.8rem;
     padding: 2px;
 }
 
@@ -1857,11 +1941,11 @@ margin-left: auto; /* 保持靠右 */
 
 .pinned-project {
     background: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 16px;
     margin-bottom: 16px;
     position: relative;
-    border: 1px solid var(--border-color); /* 亮色模式下的边框 */
     box-shadow: none; /* 移除阴影 */
 }
 
@@ -1869,9 +1953,8 @@ margin-left: auto; /* 保持靠右 */
 
 /* 暗色模式样式 */
 [data-theme="dark"] .pinned-project {
-    background: var(--card-bg);
-    border: none; /* 暗色模式下移除边框 */
-    box-shadow: none;
+    background-color: #0d1117;
+    border-color: #30363d;
 }
 
 /* 移除悬停效果但保留边框 */
@@ -3877,7 +3960,7 @@ margin-left: auto; /* 保持靠右 */
     }
 
     .pinned-project .repo-card .repo-title {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .pinned-project .repo-card .repo-description {
@@ -4030,7 +4113,7 @@ margin-left: auto; /* 保持靠右 */
   margin-bottom: 4px;
 }
 .repo-title {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: var(--link-color);
   text-decoration: none;
@@ -4086,16 +4169,30 @@ margin-left: auto; /* 保持靠右 */
 }
 .repo-bottom {
   display: flex;
-  gap: 18px;
+  gap: 20px;
   align-items: center;
   font-size: 13px;
   color: var(--text-secondary);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
 }
 .repo-lang {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .repo-lang {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .repo-lang:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 .repo-license {
   display: inline-flex;
@@ -4115,7 +4212,13 @@ margin-left: auto; /* 保持靠右 */
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 2px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .repo-extra {
+  border-top-color: rgba(255, 255, 255, 0.05);
 }
 .repo-issues {
   display: inline-flex;
@@ -4123,11 +4226,11 @@ margin-left: auto; /* 保持靠右 */
   color: #e11d48;
   font-weight: 500;
   font-size: 13px;
-  background: transparent;
+  background: rgba(225, 29, 72, 0.1);
   border-radius: 8px;
-  padding: 2px 8px;
-  gap: 4px;
-  border: 1px solid #e11d48;
+  padding: 6px 12px;
+  gap: 6px;
+  border: 1px solid rgba(225, 29, 72, 0.2);
 }
 
 .repo-issues svg {
@@ -4168,12 +4271,12 @@ margin-left: auto; /* 保持靠右 */
 }
 .repo-projects {
   display: inline-block;
-  background: #e5e7eb;
-  color: #374151;
+  background: #2563eb;
+  color: white;
   font-size: 12px;
-  border-radius: 6px;
-  padding: 2px 10px;
-  font-weight: 500;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 600;
   margin-left: 2px;
 }
 [data-theme="dark"] .repo-tag {
@@ -4181,8 +4284,8 @@ margin-left: auto; /* 保持靠右 */
   color: #fff;
 }
 [data-theme="dark"] .repo-projects {
-  background: #23272e;
-  color: #cbd5e1;
+  background: #1d4ed8;
+  color: #ffffff;
 }
 [data-theme="dark"] .repo-issues {
   background: rgba(225,29,72,0.18);
@@ -5221,7 +5324,7 @@ margin-left: auto; /* 保持靠右 */
     max-width: 100% !important;
     width: auto !important; /* 强制宽度自适应，保持比例 */
     height: auto !important; /* 确保高度自适应，防止变形 */
-    object-fit: contain !important;
+    object-fit: contain !important; /* 确保图片等比例缩放，并完全显示 */
     margin-bottom: 5px !important; /* 图片结尾高度为5px */
 }
 
@@ -6033,6 +6136,7 @@ margin-left: auto; /* 保持靠右 */
     font-size: 12px;
     color: var(--text-secondary);
     transition: none;
+    -webkit-user-select: none;
     user-select: none;
 }
 
@@ -6064,6 +6168,62 @@ margin-left: auto; /* 保持靠右 */
 /* .commit-message-toggle:hover .toggle-icon {
     color: var(--text-color);
 } */
+
+/* closed/reopened activity toggle styles */
+.closed-reopened-activity-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 6px;
+    padding: 4px 8px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-secondary);
+    transition: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.closed-reopened-activity-toggle:hover,
+.closed-reopened-activity-toggle:active,
+.closed-reopened-activity-toggle:focus,
+.closed-reopened-activity-toggle.expanded,
+.closed-reopened-activity-toggle.expanded:hover,
+.closed-reopened-activity-toggle.expanded:active,
+.closed-reopened-activity-toggle.expanded:focus {
+    background-color: var(--bg-tertiary) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] .closed-reopened-activity-toggle {
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+.closed-reopened-activity-group {
+    margin-top: 6px;
+}
+
+/* 移除 closed-reopened-activity-group 前面的活动项底部边框 */
+.activity-item + .closed-reopened-activity-group {
+    margin-top: 0;
+    border-top: none;
+}
+
+.activity-item.before-collapse-group {
+    border-bottom: none !important;
+}
+
+.closed-reopened-activity-hidden {
+    display: none;
+}
 
 [data-theme="dark"] .commit-message-toggle {
     background-color: var(--bg-tertiary);
@@ -6812,7 +6972,7 @@ margin-left: auto; /* 保持靠右 */
 /* 更小屏幕适配 */
 @media (max-width: 480px) {
     .pinned-project .repo-title {
-        font-size: 1.2rem !important;
+        font-size: 1.1rem !important;
         margin: 0.1rem 0 0.3rem; /* 增大上边距 */
         line-height: 1.3;
     }
@@ -7076,17 +7236,31 @@ margin-left: auto; /* 保持靠右 */
 /* 响应式设计 */
 @media (max-width: 768px) {
     .contribution-tooltip {
-        font-size: 11px;
-        padding: 6px 10px;
-        max-width: 180px;
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    
+    .contribution-tooltip.show {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
     }
 }
 
 @media (max-width: 480px) {
     .contribution-tooltip {
-        font-size: 10px;
-        padding: 5px 8px;
-        max-width: 160px;
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    
+    .contribution-tooltip.show {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
     }
 }
 
@@ -8076,4 +8250,7 @@ margin-left: auto; /* 保持靠右 */
 [data-theme="dark"] .stats svg path {
     fill: var(--icon-color);
 }
-
+.tab {
+        flex: 1;
+        text-align: center;
+    }
