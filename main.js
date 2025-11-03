@@ -75,13 +75,13 @@ const GITHUB_API_BASE = 'https://api.github.com';
 const GITHUB_TOKEN = '#';
 
 // Memos API配置
-const MEMOS_API_BASE = 'https://api.yuazhi.cn/api/v1';
+const MEMOS_API_BASE = '#';
 const MEMOS_TOKEN = '#';
 // const MEMOS_RESOURCE_BASE = 'http://120.26.160.134:5230/o/r/'; // Memos 资源的基础URL
 
 // 文章 API 配置
 const ARTICLES_API_CONFIG = {
-    URL: "https://open.apisql.cn/api/postget/$rest",
+    URL: "#",
     Method: "post",
     Headers: {
         "Accept": "application/json, text/plain, */*",
