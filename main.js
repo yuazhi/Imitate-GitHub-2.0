@@ -2233,11 +2233,11 @@ async function renderOverview() {
             <div class="github-stats-section">
                 <h2 class="stats-title">Contributions & Reactions</h2>
                 <div class="stats-container">
-                    <img src="https://hub.gitmirror.com/https://raw.githubusercontent.com/yuazhi/yuazhi/f33292b1b2812dbe789397126b2dd437455aac18/metrics.isocalendar.svg" 
+                    <img src="https://github.chenc.dev/https://raw.githubusercontent.com/yuazhi/yuazhi/f33292b1b2812dbe789397126b2dd437455aac18/metrics.isocalendar.svg" 
                          alt="GitHub Contributions Calendar" 
                          class="github-stats-image"
                          loading="lazy">
-                    <img src="https://hub.gitmirror.com/https://raw.githubusercontent.com/yuazhi/yuazhi/c2a0dd99dbf105e24a648037b126e4e7f30f845f/metrics.base.svg" 
+                    <img src="https://github.chenc.dev/https://raw.githubusercontent.com/yuazhi/yuazhi/c2a0dd99dbf105e24a648037b126e4e7f30f845f/metrics.base.svg" 
                          alt="GitHub Base Metrics" 
                          class="github-stats-image"
                          loading="lazy">
