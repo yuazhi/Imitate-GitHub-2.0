@@ -11,7 +11,7 @@
     --text-secondary: #656d76;
     --border-color: #d0d7de;
     --card-bg: #ffffff;
-    --hover-color: #0969da;
+    --hover-color: #FFD700;
     --skill-bg: #f6f8fa;
     --contribution-bg: #ebedf0;
     --contribution-l1: #9be9a8;
@@ -19,8 +19,8 @@
     --contribution-l3: #30a14e;
     --contribution-l4: #216e39;
     --icon-color: #2c2c2c;
-    --link-color: #0969da;
-    --link-hover-color: #1F2328;
+    --link-color: #DC143C;
+    --link-hover-color: #FFD700;
     --border-radius: 6px;
     --header-bg: #f6f8fa;
     --color-javascript: #f1e05a;
@@ -46,9 +46,15 @@
     --bg-secondary: #f6f8fa;
     --bg-secondary-dark: #2d333b;
     --site-info-value: #586069;
-    --site-info-value-hover: #0366d6;
+    --site-info-value-hover: #FFD700;
     --skill-bg-hover: #c0c0c0; /* 更深的灰色，增强触摸反馈对比度 */
     --card-bg-hover: #2d333b;
+    /* 春节配色 */
+    --spring-red: #DC143C;
+    --spring-gold: #FFD700;
+    --spring-orange: #FF7F50;
+    --spring-red-light: #FF6B6B;
+    --spring-gold-light: #FFE66D;
 }
 
 [data-theme="dark"] {
@@ -57,7 +63,7 @@
     --text-secondary: #7d8590;
     --border-color: #30363d;
     --card-bg: #161b22;
-    --hover-color: #2f81f7;
+    --hover-color: #FFD700;
     --skill-bg: #21262d;
     --contribution-bg: #161b22;
     --contribution-l1: #0e4429;
@@ -65,8 +71,8 @@
     --contribution-l3: #26a641;
     --contribution-l4: #39d353;
     --icon-color: #c9d1d9;
-    --link-color: #2f81f7;
-    --link-hover-color: #539bf5;
+    --link-color: #FF6B6B;
+    --link-hover-color: #FFD700;
     --header-bg: #161b22;
     --modal-bg: #161b22;
     --modal-border: #30363d;
@@ -77,6 +83,12 @@
     --commit-item-bg: #0d1117;
     --code-block-bg: #161b22;
     --card-bg-hover: #3a414a; /* 更亮的背景色，增强触摸反馈对比度 */
+    /* 春节配色 - 暗色模式 */
+    --spring-red: #FF6B6B;
+    --spring-gold: #FFD700;
+    --spring-orange: #FF8C69;
+    --spring-red-light: #FF8E8E;
+    --spring-gold-light: #FFE66D;
 }
 
 body {
@@ -202,7 +214,7 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #F78166;
+    background-color: var(--spring-red);
     transition: width 0.2s ease;
 }
 
@@ -217,7 +229,7 @@ body {
 }
 
 .tab.active {
-    border-bottom-color: #F78166;
+    border-bottom-color: var(--spring-red);
     font-weight: 600;
     color: var(--text-color);
     background-color: transparent;
@@ -253,7 +265,7 @@ body {
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 14px;
-    color: var(--link-color);
+    color: #ff6b6b;
     line-height: 1.3;
     letter-spacing: -0.01em;
     display: block;
@@ -364,12 +376,9 @@ body {
 }
 
 [data-theme="dark"] .repo-title {
-    color: var(--link-color);
+    color: #ff6b6b;
 }
 
-[data-theme="dark"] .repo-title:hover {
-    color: var(--hover-color);
-}
 
 [data-theme="dark"] .repo-tag {
     background-color: var(--bg-secondary);
@@ -389,7 +398,7 @@ body {
 }
 
 .repo-title {
-    color: var(--link-color);
+    color: #ff6b6b;
     font-weight: 600;
     font-size: 14px;
     text-decoration: none;
@@ -398,7 +407,6 @@ body {
 }
 
 .repo-title:hover {
-    color: var(--link-color);
     text-decoration: none;
 }
 
@@ -1003,7 +1011,7 @@ body {
 .pinned-project .repo-title {
     font-size: 16px;
     font-weight: 600;
-    color: #0969da;
+    color: #ff6b6b;
     margin-bottom: 8px;
     transition: color 0.3s ease;
 }
@@ -1060,7 +1068,7 @@ body {
 }
 
 [data-theme="dark"] .pinned-project .repo-title {
-    color: #2f81f7;
+    color: #ff6b6b;
 }
 
 [data-theme="dark"] .pinned-project .repo-description {
@@ -1095,7 +1103,7 @@ body {
 
     .pinned-project .repo-title {
         font-size: 15px;
-        color: #0969da;
+        color: #ff6b6b;
     }
 
     .pinned-project .repo-description {
@@ -1141,7 +1149,7 @@ body {
 
     .pinned-project .repo-title {
         font-size: 13px;
-        color: #0969da;
+        color: #ff6b6b;
     }
 
     .pinned-project .repo-description {
@@ -1525,9 +1533,6 @@ margin-left: auto; /* 保持靠右 */
     height: 14px;
 }
 
-.beian a:hover {
-    color: var(--hover-color);
-}
 
 /* 手机端适配 */
 @media (max-width: 768px) {
@@ -2054,7 +2059,7 @@ margin-left: auto; /* 保持靠右 */
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #F78166;
+    background-color: var(--spring-red);
     transition: width 0.2s ease;
 }
 
@@ -2069,7 +2074,7 @@ margin-left: auto; /* 保持靠右 */
 }
 
 .tab.active {
-    border-bottom-color: #F78166;
+    border-bottom-color: var(--spring-red);
     font-weight: 600;
     color: var(--text-color);
     background-color: transparent;
@@ -3271,6 +3276,53 @@ margin-left: auto; /* 保持靠右 */
 .contribution-legend .legend-item[data-level="3"] { background-color: var(--contribution-l3); }
 .contribution-legend .legend-item[data-level="4"] { background-color: var(--contribution-l4); }
 
+/* Contributions 加载遮罩和动画 */
+.contributions {
+    position: relative;
+}
+
+.contributions-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: var(--border-radius);
+}
+
+[data-theme="dark"] .contributions-loading-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.contributions-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--text-color);
+    border-radius: 50%;
+    animation: contributions-spin 0.8s linear infinite;
+}
+
+[data-theme="dark"] .contributions-loading-spinner {
+    border-color: rgba(255, 255, 255, 0.1);
+    border-top-color: var(--text-color);
+}
+
+@keyframes contributions-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 768px) {
     .contribution-calendar {
         padding: 0.75rem;
@@ -4115,12 +4167,9 @@ margin-left: auto; /* 保持靠右 */
 .repo-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--link-color);
+  color: #ff6b6b;
   text-decoration: none;
   transition: color 0.2s;
-}
-.repo-title:hover {
-  color: var(--link-color);
 }
 .repo-created {
   font-size: 12px;
@@ -4752,6 +4801,94 @@ margin-left: auto; /* 保持靠右 */
     margin-top: 0; /* Ensure no top margin, spacing handled by memo-reactions */
     font-size: 13px;
     color: var(--text-secondary);
+}
+
+/* 添加表情按钮样式 */
+.reaction-button.add-reaction-button {
+    padding: 6px 10px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.reaction-button.add-reaction-button:hover {
+    opacity: 1;
+}
+
+/* 表情选择器样式 */
+.reaction-picker {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.reaction-picker-content {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+    width: min(420px, calc(100% - 32px));
+    box-shadow: none;
+}
+
+.reaction-picker-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.reaction-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(52px, 1fr));
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.reaction-picker-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 24px;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reaction-picker-item-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    filter: grayscale(0.2);
+    transform: none !important;
+}
+
+.reaction-picker-note {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.reaction-picker-close {
+    width: 100%;
+    padding: 10px;
+    background: var(--btn-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
 }
 
 /* 加载更多按钮样式 */
@@ -5964,6 +6101,11 @@ margin-left: auto; /* 保持靠右 */
     border-color: #6b8b4a !important;
 }
 
+.commit-bg-red {
+    background-color: #FFE6E6 !important;
+    border-color: #FF6666 !important;
+}
+
 /* 暗色模式下的随机背景颜色 - 护眼配色 */
 [data-theme="dark"] .commit-bg-green-bean {
     background-color: #1a2d1a !important;
@@ -5988,6 +6130,11 @@ margin-left: auto; /* 保持靠右 */
 [data-theme="dark"] .commit-bg-rouge {
     background-color: #2a1a1a !important;
     border-color: #d47474 !important;
+}
+
+[data-theme="dark"] .commit-bg-red {
+    background-color: #3a1a1a !important;
+    border-color: #FF6666 !important;
 }
 
 [data-theme="dark"] .commit-bg-sky-blue {
@@ -6955,7 +7102,7 @@ margin-left: auto; /* 保持靠右 */
 .pinned-project .repo-title {
     font-size: 1.25rem !important;
     font-weight: 600;
-    color: var(--hover-color);
+    color: #ff6b6b;
     margin-bottom: 0.5rem;
     line-height: 1.4;
 }
